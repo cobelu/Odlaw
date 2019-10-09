@@ -11,6 +11,12 @@ class Database:
         # Initialize member variables
         self.connector = connector
 
+        # Query for table names
+        tables = connector.query_tables()
+
+        # Query for foreign keys
+        fks = connector.query_fks()
+
         # TODO: initialize a graph object from networkx from the given connector object
 
     def plot(self):

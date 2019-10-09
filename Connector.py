@@ -13,6 +13,20 @@ class Connector:
 
     def query(self, query):
         result = self.connection.execute(query)
-        for row in result:
-            print("username:", row['username'])
+        return result
+
+    def query_tables(self):
+        # http://www.postgresqltutorial.com/postgresql-show-tables/
+        # TODO: Simplify query
+        tables_q = "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
+        tables = self.query(tables_q)
+        return tables
+
+    def query_fks(self):
+        fks = self.query("SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE='FOREIGN KEY';")
+        # TODO: Figure out HOW schema is stored
+        # TODO: Figure out HOW to store fks after we know what it is (needs easy import in Database)
+        return fks
+
+    def close(self):
         self.connection.close()
