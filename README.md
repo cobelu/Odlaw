@@ -16,7 +16,7 @@ Odlaw is a client to look for customer data in relational databases for GDPR com
 
 ## Notes
 
-# SQLAlchemy uses `dialect+driver://username:password@host:port/database` as a format, so we'll want to use an arg parser to figure out the optional inputs
+* SQLAlchemy uses `dialect+driver://username:password@host:port/database` as a format, so we'll want to use an arg parser to figure out the optional inputs
 * Each node represents a table in a database
 * Each arc represents a foreign key entry in a table (tail) to a primary key in another table (source)
 * The label of each arc is the name of the foreign key constraint (DBAs are _supposed_ to name their key constraints)
