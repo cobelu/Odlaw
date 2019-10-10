@@ -1,4 +1,4 @@
-import networkx
+import networkx as nx
 
 
 class Database:
@@ -12,12 +12,18 @@ class Database:
         self.connector = connector
 
         # Query for table names
-        tables = connector.query_tables()
+        self.tables = connector.query_tables()
 
         # Query for foreign keys
-        fks = connector.query_fks()
+        self.fks = connector.query_fks()
 
         # TODO: initialize a graph object from networkx from the given connector object
+        self.graph = nx.MultiDiGraph()
+        # The database is represented by a graph
+        # Each node is a table in the database
+        # Each arc is a foreign key constraint
+        # The head of the arc is the foreign key's table
+        # The tail of the arc is the primary key's table
 
     def plot(self):
         # TODO: Export the graph as a matplotlib plot

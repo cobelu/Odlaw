@@ -18,12 +18,16 @@ class Connector:
     def query_tables(self):
         # http://www.postgresqltutorial.com/postgresql-show-tables/
         # TODO: Simplify query
-        tables_q = "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
+        tables_q = "SELECT *"
+        tables_q += "FROM pg_catalog.pg_tables"
+        tables_q += "WHERE schemaname != \'pg_catalog\'"
+        tables_q += "AND schemaname != \'information_schema\';"
         tables = self.query(tables_q)
         return tables
 
     def query_fks(self):
-        fks = self.query("SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE='FOREIGN KEY';")
+        fks_q = "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE=\'FOREIGN KEY\';"
+        fks = self.query(fks_q)
         # TODO: Figure out HOW schema is stored
         # TODO: Figure out HOW to store fks after we know what it is (needs easy import in Database)
         return fks

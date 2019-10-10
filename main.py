@@ -2,8 +2,8 @@
 # Retroactive GDPR compliance for rendering exports of user data
 
 import sys
-import Connector
-import Database
+from connector import Connector
+from database import Database
 
 
 def main():
@@ -33,6 +33,9 @@ def main():
     # Generate visual graph representation (if desired)
     if plot:
         database.plot()
+
+    # Don't forget to close the connection when done!
+    connector.close()
 
 
 if __name__ == '__main__':
