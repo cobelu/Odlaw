@@ -1,4 +1,5 @@
-from sqlalchemy.engine import create_engine
+# from sqlalchemy import create_engine
+import pandas as pd
 
 
 class Connector:
@@ -12,7 +13,7 @@ class Connector:
         self.connection = self.engine.connect()
 
     def query(self, query):
-        result = self.connection.execute(query)
+        result = pd.read_sql_query(query, self.engine)
         return result
 
     def query_tables(self):
