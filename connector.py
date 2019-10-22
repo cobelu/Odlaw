@@ -16,7 +16,7 @@ class Connector:
         result = pd.read_sql_query(query, self.engine)
         return result
 
-    def query_tables(self):
+    def query_tables_pgsql(self):
         # http://www.postgresqltutorial.com/postgresql-show-tables/
         # TODO: Simplify query
         tables_q = "SELECT *"
@@ -26,17 +26,17 @@ class Connector:
         tables = self.query(tables_q)
         return tables
 
-    def query_fks_sqlite(self):
+    def query_tables_sqlite(self):
         # Find all tables
         tables_q = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE \'sqlite_%\';"
+        tables = self.query(tables_q)
+        return tables
 
-        # TODO: Convert tables into a DF
-
+    def query_fks_sqlite(self):
         # Find all foreign keys
         # https://www.oreilly.com/library/view/using-sqlite/9781449394592/re176.html
         fks_q = "PRAGMA foreign_key_list([table]);"  # TODO: Insert table name
         fks = self.query(fks_q)
-
         table_col = "table"
         from_col = "from"
         to_col = "to"

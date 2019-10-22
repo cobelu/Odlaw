@@ -13,17 +13,16 @@ class Database:
         self.connector = connector
 
         # Query for table names
-        self.tables = connector.query_tables()
+        self.tables = connector.query_tables_sqlite()
 
         # Query for foreign keys
-        self.fks = connector.query_fks()
+        # TODO: FIXME
+        # self.fks = connector.query_fks_sqlite()
 
         # TODO: initialize a graph object from networkx from the given connector object
         self.graph = nx.MultiDiGraph()
         # The database is represented by a graph
-        fks = connector.query_fks()
         # Each node is a table in the database
-
         # Each arc is a foreign key constraint
         # The name of the arc is the name of the FK constraint
         # The head of the arc is the foreign key's table
