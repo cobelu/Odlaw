@@ -31,4 +31,4 @@ class Database:
 
     def plot(self):
         # TODO: Export the graph as a matplotlib plot
-        print("I'm drawing myself in networkx!")
+        nx.draw(self.graph)

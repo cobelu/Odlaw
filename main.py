@@ -1,8 +1,9 @@
 # Odlaw
 # Retroactive GDPR compliance for rendering exports of user data
 
-# from connector import Connector
-# from database import Database
+from connector import Connector
+from database import Database
+import psycopg2
 import argparse
 
 
@@ -14,7 +15,7 @@ def main():
     # https://stackabuse.com/command-line-arguments-in-python/
     # initiate the parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--dialect", type=str, default='postgresql', help='SQL dialect', action='store')
+    parser.add_argument("-d", "--dialect", type=str, default='sqlite', help='SQL dialect', action='store')
     parser.add_argument("-r", "--driver", type=str, default='psycopg2', help='Driver', action='store')
     parser.add_argument("-u", "--user", type=str, default='', help='Username', action='store')
     parser.add_argument("-P", "--password", type=str, default='', help='Password', action='store')
@@ -29,32 +30,32 @@ def main():
     # check for --version or -V
     if args.version:
         print("Odlaw v0.1")
-    if args.user:
-        dialect = args.dialect
-        print("Using dialect: " + dialect)
 
-    # # Other command line args
-    # plot = ''  # Location of plot
-    #
-    # # Build up a database URL
+    # Other command line args
+    plot = ''  # Location of plot
+
+    # Build up a database URL
     # url = "%s+%s://%s:%s@%s:%s/%s" % (args.dialect,
     #                                   args.driver,
-    #                                   args.username,
+    #                                   args.user,
     #                                   args.password,
     #                                   args.host,
     #                                   args.port,
-    #                                   args.database)
-    #
-    # # Generate a connection
-    # connector = Connector(url)
-    #
-    # # Create a graph representation of the database
-    # database = Database(connector)
-    #
-    # # Generate visual graph representation (if desired)
-    #
-    # # Don't forget to close the connection when done!
-    # connector.close()
+    #                                   args.name)
+
+    # Testing URL
+    url = 'sqlite:///company.db'
+
+    # Generate a connection
+    connector = Connector(url)
+
+    # Create a graph representation of the database
+    database = Database(connector)
+
+    # Generate visual graph representation (if desired)
+
+    # Don't forget to close the connection when done!
+    connector.close()
 
 
 if __name__ == '__main__':

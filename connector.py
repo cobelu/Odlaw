@@ -1,4 +1,4 @@
-# from sqlalchemy import create_engine
+from sqlalchemy import create_engine
 import pandas as pd
 
 
@@ -26,11 +26,21 @@ class Connector:
         tables = self.query(tables_q)
         return tables
 
-    def query_fks(self):
-        fks_q = "SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE=\'FOREIGN KEY\';"
+    def query_fks_sqlite(self):
+        # Find all tables
+        tables_q = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE \'sqlite_%\';"
+
+        # TODO: Convert tables into a DF
+
+        # Find all foreign keys
+        # https://www.oreilly.com/library/view/using-sqlite/9781449394592/re176.html
+        fks_q = "PRAGMA foreign_key_list([table]);"  # TODO: Insert table name
         fks = self.query(fks_q)
-        # TODO: Figure out HOW schema is stored
-        # TODO: Figure out HOW to store fks after we know what it is (needs easy import in Database)
+
+        table_col = "table"
+        from_col = "from"
+        to_col = "to"
+        # TODO: Build up a DF of all tables
         return fks
 
     def close(self):
