@@ -55,6 +55,7 @@ def main():
     print(database.fks)
 
     # Generate visual graph representation (if desired)
+    database.plot()
 
     # Don't forget to close the connection when done!
     connector.close()

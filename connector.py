@@ -46,10 +46,11 @@ class Connector:
             fk = self.query(fks_q)
             # Discard non-necessary info
             fk = fk[['table', 'from', 'to']]
+            fk['from_table'] = table
             # Append to running log
             fks = fks.append(fk)
 
-        # All found, so return now
+        # All found, so reindex and return
         return fks
 
     def close(self):
