@@ -44,7 +44,7 @@ def main():
     #                                   args.name)
 
     # Testing URL
-    url = 'sqlite:///company.db'
+    url = 'sqlite:///sqlite/chinook.db'
 
     # Generate a connection
     connector = Connector(url)
