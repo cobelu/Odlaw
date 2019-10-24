@@ -33,14 +33,23 @@ class Connector:
         return tables
 
     def query_fks_sqlite(self):
-        # Find all foreign keys
-        # https://www.oreilly.com/library/view/using-sqlite/9781449394592/re176.html
-        fks_q = "PRAGMA foreign_key_list([table]);"  # TODO: Insert table name
-        fks = self.query(fks_q)
-        table_col = "table"
-        from_col = "from"
-        to_col = "to"
-        # TODO: Build up a DF of all tables
+        # Empty DataFrame to be appended
+        fks = pd.DataFrame()
+
+        # Find all tables
+        tables = self.query_tables_sqlite()
+        table_names = tables['name'].tolist()
+        for table in table_names:
+            # https://www.oreilly.com/library/view/using-sqlite/9781449394592/re176.html
+            fks_q = "PRAGMA foreign_key_list(%s);" % table
+            # Ask for the foreign keys on that table
+            fk = self.query(fks_q)
+            # Discard non-necessary info
+            fk = fk[['table', 'from', 'to']]
+            # Append to running log
+            fks = fks.append(fk)
+
+        # All found, so return now
         return fks
 
     def close(self):

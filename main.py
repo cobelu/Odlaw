@@ -52,6 +52,7 @@ def main():
     # Create a graph representation of the database
     database = Database(connector)
     print(database.tables)
+    print(database.fks)
 
     # Generate visual graph representation (if desired)
 
