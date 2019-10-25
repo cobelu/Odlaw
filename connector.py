@@ -82,3 +82,4 @@ class Connector:
         :return: None
         """
         self.connection.close()
+        return
