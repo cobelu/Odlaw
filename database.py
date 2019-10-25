@@ -36,9 +36,9 @@ class Database:
             # The name of the arc is the name of the FK constraint
             from_col = fk['from']
             to_col = fk['to']
-            self.graph.add_edge(from_table, to_table, from_col=from_col, to_col=to_col)
+            # REMEMBER! Head is to and tail is from!
+            self.graph.add_edge(to_table, from_table, from_col=from_col, to_col=to_col)
 
     def plot(self):
-        # TODO: Export the graph as a matplotlib plot
-        nx.draw(self.graph)
+        nx.draw_shell(self.graph, arrowsize=16, node_color='#D3D3D3', node_size=1000, with_labels=True)
         plt.show()
