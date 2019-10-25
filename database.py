@@ -40,5 +40,8 @@ class Database:
             self.graph.add_edge(to_table, from_table, from_col=from_col, to_col=to_col)
 
     def plot(self):
+        """
+        Draws the graph in Matplotlib.
+        """
         nx.draw_shell(self.graph, arrowsize=16, node_color='#D3D3D3', node_size=1000, with_labels=True)
         plt.show()

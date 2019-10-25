@@ -13,10 +13,21 @@ class Connector:
         self.connection = self.engine.connect()
 
     def query(self, query):
+        """
+        Queries the database.
+
+        :param query: SQL string to be executed
+        :return: A pandas DF of the query results
+        """
         result = pd.read_sql_query(query, self.engine)
         return result
 
     def query_tables_pgsql(self):
+        """
+        Asks a PostgreSQL DB for its tables.
+
+        :return: A pandas DF of tables in the PGSQL DB
+        """
         # http://www.postgresqltutorial.com/postgresql-show-tables/
         # TODO: Simplify query
         tables_q = "SELECT *"
@@ -27,12 +38,22 @@ class Connector:
         return tables
 
     def query_tables_sqlite(self):
+        """
+        Asks a SQLite DB for its tables.
+
+        :return: A pandas DF of tables in the SQLite DB
+        """
         # Find all tables
         tables_q = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE \'sqlite_%\';"
         tables = self.query(tables_q)
         return tables
 
     def query_fks_sqlite(self):
+        """
+        Asks a SQLite DB for its foreign keys.
+
+        :return: A pandas DF of foreign keys in the SQLite DB
+        """
         # Empty DataFrame to be appended
         fks = pd.DataFrame()
 
@@ -54,4 +75,10 @@ class Connector:
         return fks
 
     def close(self):
+        """
+        Closes the connection to the database.
+        Should be called when all work is done, every time.
+
+        :return: None
+        """
         self.connection.close()
