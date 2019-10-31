@@ -68,7 +68,8 @@ class Database:
         :param to_col: The column including the key_id in to_table
         :return: JSON object of user data
         """
-        # report_q = "SELECT * FROM to-table WHERE from-table.from = to-table.to"
+        report_q = "SELECT * FROM %s WHERE %s=%s" % (to_table, from_col, to_col)
+        report = self.connector.query(report_q)
         # new_id = PK(results)
         #   BFS from new-from-table to each new-to-table:
         #   new-from-col = edge.from-col
