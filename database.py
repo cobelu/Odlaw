@@ -22,6 +22,9 @@ class Database:
         # The database is represented by a graph
         self.graph = nx.MultiDiGraph()
 
+        # A global dictionary to store reports
+        self.report_dict = {}
+
         # Each node is a table in the database
         table_names = self.tables['name'].tolist()
         for table in table_names:
@@ -47,41 +50,36 @@ class Database:
         plt.show()
         return
 
-    def generate_user_data_report(self, user_id, user_table):
+    def generate_user_data_report(self, user_table, user_id):
         """
         Finds all user data for a specified user, provided all foreign keys are correct.
 
-        :param user_id: The desired user
         :param user_table: The table of users
+        :param user_id: The desired user
         :return: A dictionary of pandas DFs for all user report sub-tables
         """
         # Start from user table and search to all dependent data
-        # Key of the dict is the name of the table
-        # Value of the dict is the user's table contents
-        # report_df = report_helper(user_id, user_table, user_table)
-        return {}
+        self.visit(user_table, user_id)
 
-    def report_helper(self, key_id, from_table, to_table, from_col, to_col):
-        """
-        Recursive helper for :fun:generate_user_data_report.
+    def visit(self, node, values):
+        # Get all edges from root node
+        edges = []
 
-        :param key_id: Primary key of the current table
-        :param from_table: The table at the tail of the arc
-        :param to_table: The table at the head of the arc
-        :param from_col: The column including the key_id in from_table
-        :param to_col: The column including the key_id in to_table
-        :return: pandas DF of data
-        """
-        # Form search
-        report_q = "SELECT * FROM %s WHERE %s=%s" % (to_table, from_col, to_col)
-        report = self.connector.query(report_q)
+        for edge in edges:
+            # Get names of edges: columns to check (from_col, to_col)
+            from_col = ''
+            to_col = ''
 
-        # new_id = PK(results)
-        #   BFS from new-from-table to each new-to-table:
-        #   new-from-col = edge.from-col
-        #   new-to-col = edge.to-col
-        #   search-for-user-data(new-from-table, new-to-table, id, new-from-col, new-to-col)
-        return
+            # Get neighbors of root_nodes
+            data = self.query("SELECT * FROM %s WHERE %s IN (%s);") % (self.list_to_string(values))
+
+            # Write data to dict
+
+        # Extract unique ID vals from data and send to new_values
+        new_values = {}
+        for neighbor in self.graph.neighbors(node):
+            self.visit(neighbor, new_values)
+        return True
 
     def generate_csv_user_data_report(self, user_id, user_table, location=None, prefix='report', sep=','):
         """
@@ -110,3 +108,7 @@ class Database:
         # We were unsuccessful if there was a failure
         else:
             return False
+
+    @staticmethod
+    def list_to_string(list_of_stuff):
+        return str(list_of_stuff).strip('[]')
