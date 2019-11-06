@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-import report.Report
 
 from report import Report
 
@@ -67,18 +66,20 @@ class Database:
     def visit(self, node, values, user_report):
         # Get all edges from root node
         neighbors = self.graph.neighbors(node)
-
-        for neighbor in self.graph.neighbors(node):
+        for neighbor in neighbors:
             # Get names of edges: columns to check
             edge_data = self.graph.get_edge_data(node, neighbor)
-            from_col = edge_data['from_col']
-            to_col = edge_data['to_col']
+            print(edge_data)
+            from_col = edge_data[0]['from_col']
+            to_col = edge_data[0]['to_col']
 
             print("(from_col, to_col)=(%s, %s)" % (from_col, to_col))
 
             # Get neighbors of root_nodes
+            in_values = self.list_to_string(values)
+            print(in_values)
             data = self.connector.query(
-                "SELECT * FROM %s WHERE %s IN (%s);") % (neighbor, to_col, self.list_to_string(values))
+                "SELECT * FROM %s WHERE %s IN (%s);") % (neighbor, to_col, in_values)
 
             # Write data to dict
             user_report.add_table_entries(neighbor, data)
@@ -100,7 +101,8 @@ class Database:
         :return: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
         """
         saves = []
-        tables = self.generate_user_data_report(user_id, user_table)
+        report = self.generate_user_data_report(user_id, user_table)
+        tables = report.tables
         for table in tables:
             # Fetch name of table
             table_name = 'TABLE_NAME'

@@ -51,8 +51,11 @@ def main():
 
     # Create a graph representation of the database
     database = Database(connector)
-    print(database.tables)
-    print(database.fks)
+    # print(database.tables)
+    # print(database.fks)
+
+    # print(database.graph.nodes)
+    print(database.generate_user_data_report('CUSTOMER', 6))
 
     # Generate visual graph representation (if desired)
     database.plot()
