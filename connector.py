@@ -22,6 +22,11 @@ class Connector:
         result = pd.read_sql_query(query, self.engine)
         return result
 
+    def query_for_data(self, table, to_col, in_values):
+        query = "SELECT * FROM %s WHERE %s IN (%s);" % (table, to_col, in_values)
+        data = self.query(query)
+        return data
+
     def query_tables_pgsql(self):
         """
         Asks a PostgreSQL DB for its tables.

@@ -55,7 +55,11 @@ def main():
     # print(database.fks)
 
     # print(database.graph.nodes)
-    print(database.generate_user_data_report('CUSTOMER', 6))
+    # sample_report = database.generate_user_data_report('CUSTOMER', 6)
+    # for table in sample_report.tables:
+    #     values = sample_report.tables.get(table)
+    #     print("\t" + table)
+    #     print(values)
 
     # Generate visual graph representation (if desired)
     database.plot()

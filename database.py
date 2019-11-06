@@ -64,28 +64,31 @@ class Database:
         return user_report
 
     def visit(self, node, values, user_report):
+        # TODO: Fix visit algorithm
+        # TODO: Fix base case
         # Get all edges from root node
         neighbors = self.graph.neighbors(node)
         for neighbor in neighbors:
             # Get names of edges: columns to check
             edge_data = self.graph.get_edge_data(node, neighbor)
+            # NetworkX wraps the attributes dict in a dict
+            edge_data = edge_data[0]
             print(edge_data)
-            from_col = edge_data[0]['from_col']
-            to_col = edge_data[0]['to_col']
+            from_col = edge_data['from_col']
+            to_col = edge_data['to_col']
 
             print("(from_col, to_col)=(%s, %s)" % (from_col, to_col))
 
             # Get neighbors of root_nodes
             in_values = self.list_to_string(values)
             print(in_values)
-            data = self.connector.query(
-                "SELECT * FROM %s WHERE %s IN (%s);") % (neighbor, to_col, in_values)
+            data = self.connector.query_for_data(node, to_col, in_values)
 
             # Write data to dict
             user_report.add_table_entries(neighbor, data)
 
             # Extract unique ID vals from data and send to new_values
-            new_values = data[neighbor].unique().to_list()
+            new_values = data[to_col].unique().tolist()
             self.visit(neighbor, new_values, user_report)
         return True
 
