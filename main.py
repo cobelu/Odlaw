@@ -1,9 +1,8 @@
 # Odlaw
 # Retroactive GDPR compliance for rendering exports of user data
 
-from connector import Connector
-from database import Database
-import psycopg2
+from odlaw.connector import Connector
+from odlaw.database import Database
 import argparse
 
 
@@ -52,7 +51,7 @@ def main():
     # Create a graph representation of the database
     database = Database(connector)
     # print(database.tables)
-    # print(database.fks)
+    print(database.fks)
 
     # print(database.graph.nodes)
     # sample_report = database.generate_user_data_report('CUSTOMER', 6)
