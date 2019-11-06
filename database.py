@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
+import report.Report
+
+from report import Report
 
 
 class Database:
@@ -21,9 +24,6 @@ class Database:
 
         # The database is represented by a graph
         self.graph = nx.MultiDiGraph()
-
-        # A global dictionary to store reports
-        self.report_dict = {}
 
         # Each node is a table in the database
         table_names = self.tables['name'].tolist()
@@ -58,27 +58,34 @@ class Database:
         :param user_id: The desired user
         :return: A dictionary of pandas DFs for all user report sub-tables
         """
+        # Create a report to keep track of everything
+        user_report = Report(user_id)
         # Start from user table and search to all dependent data
-        self.visit(user_table, user_id)
+        self.visit(user_table, user_id, user_report)
+        return user_report
 
-    def visit(self, node, values):
+    def visit(self, node, values, user_report):
         # Get all edges from root node
-        edges = []
+        neighbors = self.graph.neighbors(node)
 
-        for edge in edges:
-            # Get names of edges: columns to check (from_col, to_col)
-            from_col = ''
-            to_col = ''
+        for neighbor in self.graph.neighbors(node):
+            # Get names of edges: columns to check
+            edge_data = self.graph.get_edge_data(node, neighbor)
+            from_col = edge_data['from_col']
+            to_col = edge_data['to_col']
+
+            print("(from_col, to_col)=(%s, %s)" % (from_col, to_col))
 
             # Get neighbors of root_nodes
-            data = self.query("SELECT * FROM %s WHERE %s IN (%s);") % (self.list_to_string(values))
+            data = self.connector.query(
+                "SELECT * FROM %s WHERE %s IN (%s);") % (neighbor, to_col, self.list_to_string(values))
 
             # Write data to dict
+            user_report.add_table_entries(neighbor, data)
 
-        # Extract unique ID vals from data and send to new_values
-        new_values = {}
-        for neighbor in self.graph.neighbors(node):
-            self.visit(neighbor, new_values)
+            # Extract unique ID vals from data and send to new_values
+            new_values = data[neighbor].unique().to_list()
+            self.visit(neighbor, new_values, user_report)
         return True
 
     def generate_csv_user_data_report(self, user_id, user_table, location=None, prefix='report', sep=','):
@@ -101,7 +108,6 @@ class Database:
             did_save = table.to_csv(output_url, sep=sep)
             saves.append(did_save)
         # TODO: Zip up data-frames to a single zip archive?
-        # https://stackoverflow.com/questions/25064347/sending-multiple-csv-files-to-zip-without-storing-to-disk-in-python
         # We were successful if all saves went through
         if all(save is not None for save in saves):
             return True
