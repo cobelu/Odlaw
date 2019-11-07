@@ -24,7 +24,7 @@ class Connector:
 
     def query_for_report(self, table, col, in_values):
         query = "SELECT * FROM %s WHERE %s IN (%s);" % (table, col, in_values)
-        # print(query)
+        print(query)
         data = self.query(query)
         return data
 

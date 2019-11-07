@@ -21,9 +21,9 @@ class DatabaseTest(unittest.TestCase):
         # Number of tables affected
         self.assertEquals(len(tables), 3)
         # Number of records in user table
-        self.assertEquals(tables.get('CUSTOMER'), 1)
-        self.assertEquals(tables.get('ORDERS'), 0)
-        self.assertEquals(tables.get('LINEITEM'), 0)
+        self.assertEquals(len(tables.get('CUSTOMER')), 1)
+        self.assertTrue(tables.get('ORDERS').empty)
+        self.assertTrue(tables.get('LINEITEM').empty)
 
     def test_tpc_h_search(self):
         url = 'sqlite:///../sqlite/TPC-H-small.db'
@@ -34,9 +34,9 @@ class DatabaseTest(unittest.TestCase):
         # Number of tables affected
         self.assertEquals(len(tables), 3)
         # Number of records in user table
-        self.assertEquals(tables.get('CUSTOMER'), 1)
-        self.assertEquals(tables.get('ORDERS'), 31)
-        self.assertEquals(tables.get('LINEITEM'), 120)
+        self.assertEquals(len(tables.get('CUSTOMER')), 1)
+        self.assertEquals(len(tables.get('ORDERS')), 31)
+        self.assertEquals(len(tables.get('LINEITEM')), 120)
 
 
 if __name__ == '__main__':

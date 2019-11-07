@@ -55,7 +55,7 @@ class Database:
         plt.show()
         return
 
-    def generate_user_data_report(self, user_table, user_id_col, user_id):
+    def generate_user_data_report(self, user_table, user_id):
         """
         Finds all user data for a specified user, provided all foreign keys are correct.
 
@@ -65,9 +65,11 @@ class Database:
         """
         # Create a report to keep track of everything
         user_report = Report(user_id)
+        # Fetch the PK
+        primary_key = self.pks.get(user_table)
         # Convert user_id to a list
         id_list = [user_id]
-        data = self.connector.query_for_report(user_table, user_id_col, str(user_id))
+        data = self.connector.query_for_report(user_table, primary_key, str(user_id))
         # Write data to dict
         user_report.add_table_entries(user_table, data)
         # Start from user table and search to all dependent data
@@ -77,18 +79,15 @@ class Database:
     def visit(self, node, values, user_report):
         # TODO: Fix visit algorithm
         # TODO: Fix base case
-        print("Visiting " + node + " with " + str(values))
         # Get all edges from root node
         neighbors = self.graph.neighbors(node)
         for neighbor in neighbors:
-            print("Neighbor: " + neighbor)
+            print("Visiting " + neighbor + " with " + str(values))
             # Get names of edges: columns to check
             edge_data = self.graph.get_edge_data(node, neighbor)
             # NetworkX wraps the attributes dict in a dict
             edge_data = edge_data[0]
             from_col = edge_data['from_col']
-            to_col = edge_data['to_col']
-            # print("From: " + from_col)
 
             # Get neighbors of root_nodes
             in_values = self.list_to_string(values)
@@ -98,9 +97,13 @@ class Database:
             # Write data to dict
             user_report.add_table_entries(neighbor, data)
 
+            primary_key = self.pks.get(neighbor)
+            print('Primary Key: ' + primary_key)
+            new_values = user_report.tables.get(neighbor)[primary_key].unique().tolist()
+
+            print(user_report.tables[neighbor])
+
             # Extract unique ID vals from data and send to new_values
-            new_values = user_report.tables.get(node)[to_col].unique().tolist()
-            print("New Values: " + str(new_values))
             self.visit(neighbor, new_values, user_report)
         return True
 
