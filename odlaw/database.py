@@ -17,6 +17,9 @@ class Database:
         # Query for table names
         self.tables = connector.query_tables_sqlite()
 
+        # Query for primary keys
+        self.pks = connector.query_pks_sqlite()
+
         # Query for foreign keys
         self.fks = connector.query_fks_sqlite()
 
@@ -26,7 +29,11 @@ class Database:
         # Each node is a table in the database
         table_names = self.tables['name'].tolist()
         for table in table_names:
-            self.graph.add_node(table, name=table)
+            # Fetch the primary key of the table
+            pk = self.pks.get(table)
+
+            # Add the node with name as table name
+            self.graph.add_node(table, name=table, pk=pk)
 
         # Each arc is a foreign key constraint
         for index, fk in self.fks.iterrows():
@@ -48,7 +55,7 @@ class Database:
         plt.show()
         return
 
-    def generate_user_data_report(self, user_table, user_id):
+    def generate_user_data_report(self, user_table, user_id_col, user_id):
         """
         Finds all user data for a specified user, provided all foreign keys are correct.
 
@@ -58,36 +65,42 @@ class Database:
         """
         # Create a report to keep track of everything
         user_report = Report(user_id)
+        # Convert user_id to a list
+        id_list = [user_id]
+        data = self.connector.query_for_report(user_table, user_id_col, str(user_id))
+        # Write data to dict
+        user_report.add_table_entries(user_table, data)
         # Start from user table and search to all dependent data
-        self.visit(user_table, user_id, user_report)
+        self.visit(user_table, id_list, user_report)
         return user_report
 
     def visit(self, node, values, user_report):
         # TODO: Fix visit algorithm
         # TODO: Fix base case
+        print("Visiting " + node + " with " + str(values))
         # Get all edges from root node
         neighbors = self.graph.neighbors(node)
         for neighbor in neighbors:
+            print("Neighbor: " + neighbor)
             # Get names of edges: columns to check
             edge_data = self.graph.get_edge_data(node, neighbor)
             # NetworkX wraps the attributes dict in a dict
             edge_data = edge_data[0]
-            print(edge_data)
             from_col = edge_data['from_col']
             to_col = edge_data['to_col']
-
-            print("(from_col, to_col)=(%s, %s)" % (from_col, to_col))
+            # print("From: " + from_col)
 
             # Get neighbors of root_nodes
             in_values = self.list_to_string(values)
-            print(in_values)
-            data = self.connector.query_for_data(node, to_col, in_values)
+            data = self.connector.query_for_report(neighbor, from_col, in_values)
+            # print(data)
 
             # Write data to dict
             user_report.add_table_entries(neighbor, data)
 
             # Extract unique ID vals from data and send to new_values
-            new_values = data[to_col].unique().tolist()
+            new_values = user_report.tables.get(node)[to_col].unique().tolist()
+            print("New Values: " + str(new_values))
             self.visit(neighbor, new_values, user_report)
         return True
 

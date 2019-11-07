@@ -50,8 +50,6 @@ def main():
 
     # Create a graph representation of the database
     database = Database(connector)
-    # print(database.tables)
-    print(database.fks)
 
     # print(database.graph.nodes)
     # sample_report = database.generate_user_data_report('CUSTOMER', 6)
@@ -61,7 +59,14 @@ def main():
     #     print(values)
 
     # Generate visual graph representation (if desired)
-    database.plot()
+    # database.plot()
+
+    # print(database.connector.query_pks_sqlite())
+    report = database.generate_user_data_report('CUSTOMER', 'C_CUSTKEY', 4)
+    # print("-" * 25)
+    # print(report.tables['CUSTOMER'])
+    # print(report.tables['ORDERS'])
+    # print(report.tables['LINEITEM'])
 
     # Don't forget to close the connection when done!
     connector.close()

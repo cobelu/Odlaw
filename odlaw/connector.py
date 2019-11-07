@@ -22,8 +22,9 @@ class Connector:
         result = pd.read_sql_query(query, self.engine)
         return result
 
-    def query_for_data(self, table, to_col, in_values):
-        query = "SELECT * FROM %s WHERE %s IN (%s);" % (table, to_col, in_values)
+    def query_for_report(self, table, col, in_values):
+        query = "SELECT * FROM %s WHERE %s IN (%s);" % (table, col, in_values)
+        # print(query)
         data = self.query(query)
         return data
 
@@ -52,6 +53,31 @@ class Connector:
         tables_q = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE \'sqlite_%\';"
         tables = self.query(tables_q)
         return tables
+
+    def query_pks_sqlite(self):
+        """
+        Asks a SQLite DB for its primary keys.
+
+        :return: A dictionary of primary keys in the SQLite DB
+        """
+        # Empty DataFrame to be appended
+        pks = {}
+
+        # Find all tables
+        tables = self.query_tables_sqlite()
+        table_names = tables['name'].tolist()
+        for table in table_names:
+            # https://www.oreilly.com/library/view/using-sqlite/9781449394592/re176.html
+            pks_q = "PRAGMA table_info(%s);" % table
+            # Ask for the foreign keys on that table
+            pk = self.query(pks_q)
+            # Discard non-necessary info
+            pk = pk[pk['pk'] == 1]['name'].values[0]
+            # Append to running log
+            pks[table] = pk
+
+        # All found, so reindex and return
+        return pks
 
     def query_fks_sqlite(self):
         """
