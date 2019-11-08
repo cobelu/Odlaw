@@ -65,24 +65,38 @@ class Database:
         """
         # Create a report to keep track of everything
         user_report = Report(user_id)
+
         # Fetch the PK
         primary_key = self.pks.get(user_table)
-        # Convert user_id to a list
-        id_list = [user_id]
+
+        # Add entry to the Report
         data = self.connector.query_for_report(user_table, primary_key, str(user_id))
+
         # Write data to dict
         user_report.add_table_entries(user_table, data)
+
+        # Convert user_id to a list
+        id_list = [user_id]
+
         # Start from user table and search to all dependent data
         self.visit(user_table, id_list, user_report)
+
+        # Return the built-up Report object
         return user_report
 
     def visit(self, node, values, user_report):
-        # TODO: Fix visit algorithm
-        # TODO: Fix base case
+        """
+        A recursive search through the graph representation of the database.
+        Used to generate a Report.
+
+        :param node: The name of the node to be visited
+        :param values: A list of values (FK) linking from the previous table
+        :param user_report: A Report object to build up.
+        :return: Boolean of whether success or failure
+        """
         # Get all edges from root node
         neighbors = self.graph.neighbors(node)
         for neighbor in neighbors:
-            print("Visiting " + neighbor + " with " + str(values))
             # Get names of edges: columns to check
             edge_data = self.graph.get_edge_data(node, neighbor)
             # NetworkX wraps the attributes dict in a dict
@@ -92,19 +106,18 @@ class Database:
             # Get neighbors of root_nodes
             in_values = self.list_to_string(values)
             data = self.connector.query_for_report(neighbor, from_col, in_values)
-            # print(data)
 
             # Write data to dict
             user_report.add_table_entries(neighbor, data)
 
+            # Fetch primary key and get values for next call
             primary_key = self.pks.get(neighbor)
-            print('Primary Key: ' + primary_key)
             new_values = user_report.tables.get(neighbor)[primary_key].unique().tolist()
 
-            print(user_report.tables[neighbor])
-
-            # Extract unique ID vals from data and send to new_values
+            # Recurse
             self.visit(neighbor, new_values, user_report)
+
+        # Return success
         return True
 
     def generate_csv_user_data_report(self, user_id, user_table, location=None, prefix='report', sep=','):

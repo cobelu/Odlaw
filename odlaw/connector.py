@@ -15,6 +15,8 @@ class Connector:
     def query(self, query):
         """
         Queries the database.
+        NOTE THAT THIS METHOD SHOULD NEVER (EVER) BE CALLED.
+        It should ONLY be used as a helper method within this class.
 
         :param query: SQL string to be executed
         :return: A pandas DF of the query results
@@ -23,6 +25,14 @@ class Connector:
         return result
 
     def query_for_report(self, table, col, in_values):
+        """
+        Queries the database for generation of a report.
+
+        :param table: The table to query
+        :param col: The foreign key column of the previous table
+        :param in_values: The values from the previous table that are of interest
+        :return: A pandas DF of table entries of in_values
+        """
         query = "SELECT * FROM %s WHERE %s IN (%s);" % (table, col, in_values)
         print(query)
         data = self.query(query)
