@@ -11,6 +11,7 @@ Odlaw is a client to look for and help delete customer data in relational databa
 * Command line args
 * Connector methods for PGSQL
     * Lookup syntax
+* Add a "healthiness" feature (-h?) that [checks if the graph is connected](https://networkx.github.io/documentation/stable/reference/algorithms/component.html "NetworkX Components") (all foreign keys are present) in orrder to determine health and suggest connections.
 
 ## Notes
 
