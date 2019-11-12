@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+import os
+import glob
 
+from zipfile import ZipFile
 from odlaw.report import Report
 
 
@@ -61,7 +64,7 @@ class Database:
 
         :param user_table: The table of users
         :param user_id: The desired user
-        :return: A dictionary of pandas DFs for all user report sub-tables
+        :return: A Report containing a dictionary of pandas DFs for all user report sub-tables
         """
         # Create a report to keep track of everything
         user_report = Report(user_id)
@@ -120,7 +123,7 @@ class Database:
         # Return success
         return True
 
-    def generate_csv_user_data_report(self, user_id, user_table, location=None, prefix='report', sep=','):
+    def generate_csv_user_data_report(self, user_table, user_id, location=None, prefix='report', sep=','):
         """
         Calls generate_user_data_report and writes the resulting tables to a CSV file.
 
@@ -132,15 +135,21 @@ class Database:
         :return: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
         """
         saves = []
-        report = self.generate_user_data_report(user_id, user_table)
+        report = self.generate_user_data_report(user_table, user_id)
         tables = report.tables
-        for table in tables:
-            # Fetch name of table
-            table_name = 'TABLE_NAME'
+        for table_name, dataframe in tables.items():
             output_url = "%s/%s_%s.csv" % (location, prefix, table_name)
-            did_save = table.to_csv(output_url, sep=sep)
+            did_save = dataframe.to_csv(output_url, sep=sep)
             saves.append(did_save)
-        # TODO: Zip up data-frames to a single zip archive?
+            # Write out dataframe to a csvfile
+
+        # Zip up data-frames to a single zip archive
+        zip_url = '%s_tables.zip' % prefix
+        with ZipFile(zip_url, 'w') as zf:
+            for csv in glob.glob('%s/*.csv' % location):
+                zf.write(csv)
+                os.remove(csv) # Zipped it, so remove it
+
         # We were successful if all saves went through
         if all(save is not None for save in saves):
             return True

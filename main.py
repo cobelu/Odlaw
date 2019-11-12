@@ -62,7 +62,8 @@ def main():
     # database.plot()
 
     # print(database.connector.query_pks_sqlite())
-    report = database.generate_user_data_report('CUSTOMER', 4)
+    # report = database.generate_csv_user_data_report('CUSTOMER', 4)
+    report = database.generate_csv_user_data_report('CUSTOMER', 4, "csv")
     print("-" * 25)
     # print(report.tables['CUSTOMER'])
     # print(report.tables['ORDERS'])
