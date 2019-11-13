@@ -5,6 +5,7 @@ from odlaw.connector import Connector
 from odlaw.database import Database
 from urllib.parse import quote_plus
 import argparse
+import os
 
 
 def main():
@@ -21,7 +22,7 @@ def main():
     parser.add_argument("-P", "--password", type=str, help='Password', action='store')
     parser.add_argument("-H", "--host", type=str, help='Host', action='store')
     parser.add_argument("-p", "--port", type=int, help='Port', action='store')
-    parser.add_argument("-n", "--name", type=str, default='/sqlite/TPC-H-small.db', help='Database name', action='store')
+    parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store')
     parser.add_argument("-V", "--version", help='Show program version', action='store_true')
 
     # read arguments from the command line
@@ -34,7 +35,12 @@ def main():
     # Other command line args
     plot = ''  # Location of plot
 
+    # Url structure
     # dialect+driver://username:password@host:port/database
+
+    # Example postgres
+    # postgresql://scott:tiger@localhost/mydatabase
+    # postgresql+psycopg2://scott:tiger@localhost/mydatabase
 
     # Build up a database URL
     url = args.dialect
@@ -49,17 +55,19 @@ def main():
             url += ':%s' % quote_plus(args.password)
         url += '@'
         if args.host:
-            url += args.host
+            url += '%s/' % args.host
         else:
             print("Username provided, but not host. Defaulting to host to 'localhost'")
             url += 'localhost'
         if args.port:
             url += ':%s' % args.port
-    url += args.name
+
+    url += '/%s' % args.name
 
     # Testing URL
     # url = 'sqlite:///sqlite/TPC-H-small.db'
 
+    print(url)
     # Generate a connection
     connector = Connector(url)
 
