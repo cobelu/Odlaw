@@ -4,11 +4,8 @@ Odlaw is a client to look for and help delete customer data in relational databa
 
 ## TODO
 
-* The generate_csv_user_data_report method generates a dictionary of table name keys with pandas DF values
-    *  Use [pandas' to_csv function on each DF in the dict (values) to store to a folder](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html "DF to_csv")
 * Talk about deletion
     * Deletion should be "rootward" (i.e. nearly identical to the visit method, but deletes after visit and commits after all deletions are successful)
-* Command line args
 * Connector methods for PGSQL
     * Lookup syntax
 * Add a "healthiness" feature (-h?) that [checks if the graph is connected](https://networkx.github.io/documentation/stable/reference/algorithms/component.html "NetworkX Components") (all foreign keys are present) in orrder to determine health and suggest connections.

@@ -132,7 +132,7 @@ class Database:
         :param user_id: The desired user's unique ID
         :param user_table: The table of users
         :param sep: The delimiter to be used in the output CSV file
-        :return: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html
+        :return: True if all dataframes were saved successfully, false otherwise
         """
         saves = []
         report = self.generate_user_data_report(user_table, user_id)

@@ -3,6 +3,7 @@
 
 from odlaw.connector import Connector
 from odlaw.database import Database
+from urllib.parse import quote_plus
 import argparse
 
 
@@ -15,12 +16,12 @@ def main():
     # initiate the parser
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dialect", type=str, default='sqlite', help='SQL dialect', action='store')
-    parser.add_argument("-r", "--driver", type=str, default='psycopg2', help='Driver', action='store')
-    parser.add_argument("-u", "--user", type=str, default='', help='Username', action='store')
-    parser.add_argument("-P", "--password", type=str, default='', help='Password', action='store')
-    parser.add_argument("-H", "--host", type=str, default='localhost', help='Host', action='store')
-    parser.add_argument("-p", "--port", type=int, default=5432, help='Port', action='store')
-    parser.add_argument("-n", "--name", type=str, default='', help='Database name', action='store')
+    parser.add_argument("-r", "--driver", type=str, help='Driver', action='store')
+    parser.add_argument("-u", "--user", type=str, help='Username', action='store')
+    parser.add_argument("-P", "--password", type=str, help='Password', action='store')
+    parser.add_argument("-H", "--host", type=str, help='Host', action='store')
+    parser.add_argument("-p", "--port", type=int, help='Port', action='store')
+    parser.add_argument("-n", "--name", type=str, default='/sqlite/TPC-H-small.db', help='Database name', action='store')
     parser.add_argument("-V", "--version", help='Show program version', action='store_true')
 
     # read arguments from the command line
@@ -33,17 +34,31 @@ def main():
     # Other command line args
     plot = ''  # Location of plot
 
+    # dialect+driver://username:password@host:port/database
+
     # Build up a database URL
-    # url = "%s+%s://%s:%s@%s:%s/%s" % (args.dialect,
-    #                                   args.driver,
-    #                                   args.user,
-    #                                   args.password,
-    #                                   args.host,
-    #                                   args.port,
-    #                                   args.name)
+    url = args.dialect
+    if args.driver:
+        url += ';+%s' % args.driver
+    url += '://'
+    if args.user:
+        # Usernames can hold url-unfriendly chars
+        url += quote_plus(args.user)
+        if args.password:
+            # Passwords can hold url-unfriendly chars
+            url += ':%s' % quote_plus(args.password)
+        url += '@'
+        if args.host:
+            url += args.host
+        else:
+            print("Username provided, but not host. Defaulting to host to 'localhost'")
+            url += 'localhost'
+        if args.port:
+            url += ':%s' % args.port
+    url += args.name
 
     # Testing URL
-    url = 'sqlite:///sqlite/TPC-H-small.db'
+    # url = 'sqlite:///sqlite/TPC-H-small.db'
 
     # Generate a connection
     connector = Connector(url)
