@@ -8,13 +8,13 @@ Odlaw is a client to look for and help delete customer data in relational databa
 
     `source venv/bin/activate`
 
-From the root of the project. The string (venv) should be prepended to the command prompt if the virtual environment was activated correctly
+from the root of the project. The string (venv) should be prepended to the command prompt if the virtual environment was activated correctly.
 * To then install the required packages, run:
 
     `pip3 install -r requirements.txt`
 
-Also from the root of the project. To install the packages to only the virtual environment (and not to the system evironment), make sure
-that the virtual environment is set up correctly first
+also from the root of the project. To install the packages on only the virtual environment (and not the system one), make sure
+that the virtual environment is set up correctly first through the command above.
 
 ## TODO
 
