@@ -6,12 +6,12 @@ Odlaw is a client to look for and help delete customer data in relational databa
 * You'll need to install the dependencies listed out in requirements.txt, preferably in a Python virtual environment
 * To activate the virtual environment run:
 
-source venv/bin/activate
+`source venv/bin/activate`
 
 From the root of the project. The string (venv) should be prepended to the command prompt if the virtual environment was activated correctly
 * To then install the required packages, run:
 
-pip3 install -r requirements.txt
+`pip3 install -r requirements.txt`
 
 Also from the root of the directory.
 
