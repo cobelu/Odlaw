@@ -25,13 +25,13 @@ def main():
     parser.add_argument("-p", "--port", type=int, help='Port', action='store')
     parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store')
     # Report generation
-    parser.add_argument("-R", "--report", type=str, default='~', help='Generates a CSV report', action='store')
+    parser.add_argument("-R", "--report", help='Generates a report', action='store_true')
     parser.add_argument("-t", "--table", type=str, help='User table name', action='store')
     parser.add_argument("-i", "--identifier", type=int, help='Unique user identifier for report', action='store')
+    parser.add_argument("-o", "--output", type=str, help='Directory to place the report', action='store')
     # Plotting
     parser.add_argument("-s", "--show", action='store_true')
     # Health
-    # TODO: Implement connection info in Database class
     parser.add_argument("-c", "--connected", action='store_true')
     # Application
     parser.add_argument("-V", "--version", help='Show program version', action='store_true')
@@ -85,17 +85,27 @@ def main():
     # Create a graph representation of the database
     database = Database(connector)
 
+    # Generate a health check-up (if desired)
+    if args.connected:
+        if database.is_connected():
+            print("Database is connected. Each table is connected to some other table via a foreign key.")
+        else:
+            print("Database is NOT connected.")
+            print("Consider connecting the connected components:")
+            components = database.connected_components()
+            for component in components:
+                print(component)
+
     # Generate visual graph representation (if desired)
     if args.show:
         database.plot()
 
     # Generate report and save (if desired)
-    if (args.report is '') and args.table and args.identifier:
-        report = database.generate_user_data_report(args.table, args.identifier)
-        for entry in report:
-            print(entry)
+    if args.report and args.table and args.identifier and args.output:
+        database.generate_csv_user_data_report(args.table, args.identifier, args.report)
     elif args.report and args.table and args.identifier:
-        print(database.generate_csv_user_data_report(args.table, args.identifier, args.report))
+        report = database.generate_user_data_report(args.table, args.identifier)
+        report.print_report()
 
     # Don't forget to close the connection when done!
     connector.close()

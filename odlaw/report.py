@@ -12,3 +12,8 @@ class Report:
         else:
             self.tables[table] = table_data
         return True
+
+    def print_report(self):
+        for table in self.tables:
+            print(self.tables.get(table))
+            print()

@@ -157,6 +157,22 @@ class Database:
         else:
             return False
 
+    def is_connected(self):
+        """
+        Checks if the database graph is connected.
+
+        :return: True if the graph is connected, False otherwise
+        """
+        return nx.is_connected(nx.to_undirected(self.graph))
+
+    def connected_components(self):
+        """
+        Finds the connected components of the database graph.
+
+        :return: The connected components of the database graph
+        """
+        return nx.connected_components(nx.to_undirected(self.graph))
+
     @staticmethod
     def list_to_string(list_of_stuff):
         return str(list_of_stuff).strip('[]')
