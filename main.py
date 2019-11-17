@@ -16,6 +16,7 @@ def main():
     # https://stackabuse.com/command-line-arguments-in-python/
     # initiate the parser
     parser = argparse.ArgumentParser()
+    # Database connection options
     parser.add_argument("-d", "--dialect", type=str, default='sqlite', help='SQL dialect', action='store')
     parser.add_argument("-r", "--driver", type=str, help='Driver', action='store')
     parser.add_argument("-u", "--user", type=str, help='Username', action='store')
@@ -23,6 +24,16 @@ def main():
     parser.add_argument("-H", "--host", type=str, help='Host', action='store')
     parser.add_argument("-p", "--port", type=int, help='Port', action='store')
     parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store')
+    # Report generation
+    parser.add_argument("-R", "--report", type=str, default='~', help='Generates a CSV report', action='store')
+    parser.add_argument("-t", "--table", type=str, help='User table name', action='store')
+    parser.add_argument("-i", "--identifier", type=int, help='Unique user identifier for report', action='store')
+    # Plotting
+    parser.add_argument("-s", "--show", action='store_true')
+    # Health
+    # TODO: Implement connection info in Database class
+    parser.add_argument("-c", "--connected", action='store_true')
+    # Application
     parser.add_argument("-V", "--version", help='Show program version', action='store_true')
 
     # read arguments from the command line
@@ -65,7 +76,7 @@ def main():
     url += '/%s' % args.name
 
     # Testing URL
-    # url = 'sqlite:///sqlite/TPC-H-small.db'
+    url = 'sqlite:///sqlite/TPC-H-small.db'
 
     print(url)
     # Generate a connection
@@ -74,23 +85,17 @@ def main():
     # Create a graph representation of the database
     database = Database(connector)
 
-    # print(database.graph.nodes)
-    # sample_report = database.generate_user_data_report('CUSTOMER', 6)
-    # for table in sample_report.tables:
-    #     values = sample_report.tables.get(table)
-    #     print("\t" + table)
-    #     print(values)
-
     # Generate visual graph representation (if desired)
-    # database.plot()
+    if args.show:
+        database.plot()
 
-    # print(database.connector.query_pks_sqlite())
-    # report = database.generate_csv_user_data_report('CUSTOMER', 4)
-    report = database.generate_csv_user_data_report('CUSTOMER', 4, "csv")
-    print("-" * 25)
-    # print(report.tables['CUSTOMER'])
-    # print(report.tables['ORDERS'])
-    # print(report.tables['LINEITEM'])
+    # Generate report and save (if desired)
+    if (args.report is '') and args.table and args.identifier:
+        report = database.generate_user_data_report(args.table, args.identifier)
+        for entry in report:
+            print(entry)
+    elif args.report and args.table and args.identifier:
+        print(database.generate_csv_user_data_report(args.table, args.identifier, args.report))
 
     # Don't forget to close the connection when done!
     connector.close()
