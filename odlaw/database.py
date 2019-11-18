@@ -173,6 +173,14 @@ class Database:
         """
         return nx.connected_components(nx.to_undirected(self.graph))
 
+    def number_connected_components(self):
+        """
+        Finds the number of connected components of the database graph.
+
+        :return: The number connected components of the database graph
+        """
+        return nx.number_connected_components(nx.to_undirected(self.graph))
+
     @staticmethod
     def list_to_string(list_of_stuff):
         return str(list_of_stuff).strip('[]')
