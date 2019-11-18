@@ -53,6 +53,33 @@ class Connector:
         tables = self.query(tables_q)
         return tables
 
+    def add_fk_constraint_pgsql(self, from_table, to_table, from_col, to_col, name, cascade=True):
+        """
+        Adds a foreign key constraint to the database.
+
+        :param from_table: The table containing the primary key
+        :param from_col: The primary key column in the from table
+        :param to_table: The table containing the foreign key
+        :param to_col: The foreign key column in the to table
+        :param name: The name of the foreign key constraint
+        :param cascade: If should add 'on delete cascade'
+        :return: Boolean representing success
+        """
+        # TODO: ASK "ARE YOU SURE?" FIRST (OUTSIDE OF THIS FUNCTION WHERE THE FUNCTION IS CALLED)!!!
+
+        # Build a query
+        query = "ALTER TABLE %s" % to_table
+        query += "ADD CONSTRAINT %s" % name
+        query += "FOREIGN KEY (%s)" % to_col
+        query += "REFERENCES %s(%s)" % (from_table, from_col)
+        if cascade:
+            query += "ON DELETE CASCADE"
+        query += ";"
+
+        # Add constraint
+        self.query(query)
+        return True
+
     def query_tables_sqlite(self):
         """
         Asks a SQLite DB for its tables.

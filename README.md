@@ -23,7 +23,9 @@ system-wide, then simply run the command above without the virtual environment.
     * Deletion should be "rootward" (i.e. nearly identical to the visit method, but deletes after visit and commits after all deletions are successful)
 * Connector methods for PGSQL
     * Lookup syntax
-* Add a "healthiness" feature (-h?) that [checks if the graph is connected](https://networkx.github.io/documentation/stable/reference/algorithms/component.html "NetworkX Components") (all foreign keys are present) in orrder to determine health and suggest connections.
+* Database should become a super class
+    * There should be two subclasses: DatabaseSQLite and DatabasePgsql in database_sqlite.py and database_pgsql.py, respectively
+    * Appropriate methods should be moved to the appropriate subclasses     
 
 ## Notes
 
