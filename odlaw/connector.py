@@ -82,7 +82,10 @@ class Connector:
             # Ask for the foreign keys on that table
             pk = self.query(pks_q)
             # Discard non-necessary info
-            pk = pk[pk['pk'] == 1]['name'].values[0]
+            try:
+                pk = pk[pk['pk'] == 1]['name'].values[0]
+            except IndexError:
+                pk = pd.DataFrame()
             # Append to running log
             pks[table] = pk
 

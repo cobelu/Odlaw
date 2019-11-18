@@ -76,7 +76,7 @@ def main():
     url += '/%s' % args.name
 
     # Testing URL
-    url = 'sqlite:///sqlite/TPC-H-small.db'
+    url = 'sqlite:///sqlite/company.db'
 
     print(url)
     # Generate a connection

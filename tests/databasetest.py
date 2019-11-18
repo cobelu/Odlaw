@@ -38,7 +38,7 @@ class DatabaseTest(unittest.TestCase):
         self.assertEqual(len(tables.get('ORDERS')), 31)
         self.assertEqual(len(tables.get('LINEITEM')), 120)
 
-    def test_connectedness(self):
+    def test_tpc_h_connectedness(self):
         url = 'sqlite:///../sqlite/TPC-H-small.db'
         connector = Connector(url)
         database = Database(connector)
@@ -46,6 +46,24 @@ class DatabaseTest(unittest.TestCase):
         self.assertTrue(database.is_connected())
         # Check components
         self.assertEqual(database.number_connected_components(), 1)
+
+    def test_chinook_connectedness(self):
+        url = 'sqlite:///../sqlite/chinook.db'
+        connector = Connector(url)
+        database = Database(connector)
+        # Number of records in user table
+        self.assertTrue(database.is_connected())
+        # Check components
+        self.assertEqual(database.number_connected_components(), 1)
+
+    def test_company_connectedness(self):
+        url = 'sqlite:///../sqlite/company.db'
+        connector = Connector(url)
+        database = Database(connector)
+        # Number of records in user table
+        self.assertFalse(database.is_connected())
+        # Check components
+        self.assertEqual(database.number_connected_components(), 7)
 
 
 if __name__ == '__main__':
