@@ -9,8 +9,7 @@ class ConnectorMySQL(Connector):
         super().__init__(self)
         self.database = database
 
-    @classmethod
-    def query_tables(cls):
+    def query_tables(self):
         """
         Asks a MySQL DB for its tables.
 
@@ -20,12 +19,11 @@ class ConnectorMySQL(Connector):
         # TODO: Fill in database name
         tables_q = "SELECT table_name FROM information_schema.tables"
         tables_q += " WHERE table_schema = \'your_database_name\';"
-        tables = cls.query(tables_q)
+        tables = self.query(tables_q)
         # Return the column of table names
         tables = tables['table_name']
         return tables
 
-    @classmethod
     def query_pks_mysql(self):
         """
         Asks a MySQL DB for its primary keys.
@@ -59,7 +57,6 @@ class ConnectorMySQL(Connector):
         # All found, so reindex and return
         return pks
 
-    @classmethod
     def query_fks_mysql(self):
         """
         Asks a MySQL DB for its foreign keys.

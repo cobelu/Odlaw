@@ -9,7 +9,7 @@ class ConnectorPostgreSQL(Connector):
         super().__init__(self)
         self.database = database
 
-    def query_tables_sqlite(self):
+    def query_tables(self):
         """
         Asks a SQLite DB for its tables.
 
@@ -20,7 +20,7 @@ class ConnectorPostgreSQL(Connector):
         tables = self.query(tables_q)
         return tables
 
-    def query_pks_sqlite(self):
+    def query_pks(self):
         """
         Asks a SQLite DB for its primary keys.
 
@@ -30,7 +30,7 @@ class ConnectorPostgreSQL(Connector):
         pks = {}
 
         # Find all tables
-        tables = self.query_tables_sqlite()
+        tables = self.query_tables()
         table_names = tables['name'].tolist()
         for table in table_names:
             # https://www.oreilly.com/library/view/using-sqlite/9781449394592/re176.html
@@ -48,7 +48,7 @@ class ConnectorPostgreSQL(Connector):
         # All found, so reindex and return
         return pks
 
-    def query_fks_sqlite(self):
+    def query_fks(self):
         """
         Asks a SQLite DB for its foreign keys.
 
@@ -58,7 +58,7 @@ class ConnectorPostgreSQL(Connector):
         fks = pd.DataFrame()
 
         # Find all tables
-        tables = self.query_tables_sqlite()
+        tables = self.query_tables()
         table_names = tables['name'].tolist()
         for table in table_names:
             # https://www.oreilly.com/library/view/using-sqlite/9781449394592/re176.html

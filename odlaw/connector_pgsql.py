@@ -9,7 +9,7 @@ class ConnectorPostgreSQL(Connector):
         super().__init__(self)
         self.database = database
 
-    def query_tables_pgsql(self):
+    def query_tables(self):
         """
         Asks a PostgreSQL DB for its tables.
 
@@ -26,8 +26,7 @@ class ConnectorPostgreSQL(Connector):
         tables = tables['tablename']
         return tables
 
-
-    def add_fk_constraint_pgsql(self, from_table, to_table, from_col, to_col, name, cascade=True):
+    def add_fk_constraint(self, from_table, to_table, from_col, to_col, name, cascade=True):
         """
         Adds a foreign key constraint to the database.
 
