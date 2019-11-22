@@ -3,11 +3,10 @@ from odlaw.connector import Connector
 import pandas as pd
 
 
-class ConnectorPostgreSQL(Connector):
+class ConnectorSQLite(Connector):
 
-    def __init__(self, database):
-        super().__init__(self)
-        self.database = database
+    def __init__(self, db_url):
+        Connector.__init__(self, db_url)
 
     def query_tables(self):
         """

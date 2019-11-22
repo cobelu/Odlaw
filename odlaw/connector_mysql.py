@@ -5,8 +5,8 @@ import pandas as pd
 
 class ConnectorMySQL(Connector):
 
-    def __init__(self, database):
-        super().__init__(self)
+    def __init__(self, db_url, database):
+        Connector.__init__(self, db_url)
         self.database = database
 
     def query_tables(self):

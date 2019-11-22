@@ -2,6 +2,9 @@
 # Retroactive GDPR compliance for rendering exports of user data
 
 from odlaw.connector import Connector
+from odlaw.connector_mysql import ConnectorMySQL
+from odlaw.connector_pgsql import ConnectorPostgreSQL
+from odlaw.connector_sqlite import ConnectorSQLite
 from odlaw.database import Database
 from urllib.parse import quote_plus
 import argparse
@@ -79,8 +82,16 @@ def main():
     # url = 'sqlite:///sqlite/company.db'
 
     print(url)
+
     # Generate a connection
-    connector = Connector(url)
+    if args.dialect.lower() == "mysql":
+        connector = ConnectorMySQL(url, args.name)
+    elif args.dialect.lower() == "postgresql":
+        connector = ConnectorPostgreSQL(url, args.name)
+    elif args.dialect.lower() == "sqlite":
+        connector = ConnectorSQLite(url)
+    else:
+        raise Exception("Invalid dialect")
 
     # Create a graph representation of the database
     database = Database(connector)
