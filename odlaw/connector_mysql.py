@@ -21,8 +21,9 @@ class ConnectorMySQL(Connector):
         tables_q += "WHERE table_schema=\'%s\';" % self.database
         tables = self.query(tables_q)
 
-        # Return the column of table names
-        tables = tables['TABLE_NAME']
+        # Rename the column name for compatibility
+        tables = tables.rename(columns={'TABLE_NAME': 'name'})
+
         return tables
 
     def query_pks(self):
@@ -33,7 +34,7 @@ class ConnectorMySQL(Connector):
         """
         # http://www.postgresqltutorial.com/postgresql-show-tables/
         """
-        Asks a SQLite DB for its primary keys.
+        Asks a MySQL DB for its primary keys.
 
         :return: A dictionary of primary keys in the SQLite DB
         """
@@ -49,12 +50,12 @@ class ConnectorMySQL(Connector):
             pk = self.query(pks_q)
             # Discard non-necessary info
             try:
-                pk = pk[pk['pk'] == 1]['name'].values[0]
+                pk = pk[pk['Non_unique'] == 0]['Column_name'].values[0]
+            # If there are no primary keys for the table
             except IndexError:
                 pk = pd.DataFrame()
             # Append to running log
             pks[table] = pk
-
         # All found, so reindex and return
         return pks
 
