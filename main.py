@@ -60,6 +60,8 @@ def main():
     url = args.dialect
     if args.driver:
         url += ';+%s' % args.driver
+    if args.dialect.lower() == 'mysql':
+        url += '+pymysql'
     url += '://'
     if args.user:
         # Usernames can hold url-unfriendly chars
@@ -69,7 +71,7 @@ def main():
             url += ':%s' % quote_plus(args.password)
         url += '@'
         if args.host:
-            url += '%s/' % args.host
+            url += '%s' % args.host
         else:
             print("Username provided, but not host. Defaulting to host to 'localhost'")
             url += 'localhost'

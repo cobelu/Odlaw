@@ -18,13 +18,13 @@ class Database:
         self.connector = connector
 
         # Query for table names
-        self.tables = connector.query_tables_sqlite()
+        self.tables = connector.query_tables()
 
         # Query for primary keys
-        self.pks = connector.query_pks_sqlite()
+        self.pks = connector.query_pks()
 
         # Query for foreign keys
-        self.fks = connector.query_fks_sqlite()
+        self.fks = connector.query_fks()
 
         # The database is represented by a graph
         self.graph = nx.MultiDiGraph()
