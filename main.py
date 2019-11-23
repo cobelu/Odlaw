@@ -61,6 +61,7 @@ def main():
     if args.driver:
         url += ';+%s' % args.driver
     if args.dialect.lower() == 'mysql':
+        print("Using MySQL dialect...")
         url += '+pymysql'
     url += '://'
     if args.user:
@@ -81,7 +82,7 @@ def main():
     url += '/%s' % args.name
 
     # Testing URL
-    # url = 'sqlite:///sqlite/company.db'
+    # url = 'sqlite:///sqlite/TPC-H-small.db'
 
     print(url)
 

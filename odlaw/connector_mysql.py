@@ -16,15 +16,16 @@ class ConnectorMySQL(Connector):
         :return: A pandas DF of tables in the MySQL DB
         """
         # http://www.postgresqltutorial.com/postgresql-show-tables/
-        # TODO: Fill in database name
-        tables_q = "SELECT table_name FROM information_schema.tables"
-        tables_q += " WHERE table_schema = \'your_database_name\';"
+        tables_q = "SELECT table_name "
+        tables_q += "FROM information_schema.tables "
+        tables_q += "WHERE table_schema=\'%s\';" % self.database
         tables = self.query(tables_q)
+
         # Return the column of table names
-        tables = tables['table_name']
+        tables = tables['TABLE_NAME']
         return tables
 
-    def query_pks_mysql(self):
+    def query_pks(self):
         """
         Asks a MySQL DB for its primary keys.
 
@@ -57,7 +58,7 @@ class ConnectorMySQL(Connector):
         # All found, so reindex and return
         return pks
 
-    def query_fks_mysql(self):
+    def query_fks(self):
         """
         Asks a MySQL DB for its foreign keys.
 

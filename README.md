@@ -33,6 +33,7 @@ system-wide, then simply run the command above without the virtual environment.
 * Each node represents a table in a database
 * Each arc represents a foreign key entry in a table (tail) to a primary key in another table (source)
 * The label of each arc is the name of the foreign key constraint (DBAs are _supposed_ to name their key constraints)
+* `python3 main.py -d mysql -u root -P <Password> -n classicmodels`
 
 ## Help
 
