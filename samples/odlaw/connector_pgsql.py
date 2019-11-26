@@ -1,6 +1,4 @@
-from odlaw.connector import Connector
-
-import pandas as pd
+from samples.odlaw.connector import Connector
 
 
 class ConnectorPostgreSQL(Connector):

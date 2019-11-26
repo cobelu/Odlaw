@@ -1,7 +1,7 @@
 import unittest
 
-from odlaw.connector import Connector
-from odlaw.database import Database
+from samples.odlaw.connector import Connector
+from samples.odlaw.database import Database
 
 
 class DatabaseTest(unittest.TestCase):

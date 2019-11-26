@@ -1,14 +1,12 @@
 # Odlaw
 # Retroactive GDPR compliance for rendering exports of user data
 
-from odlaw.connector import Connector
-from odlaw.connector_mysql import ConnectorMySQL
-from odlaw.connector_pgsql import ConnectorPostgreSQL
-from odlaw.connector_sqlite import ConnectorSQLite
-from odlaw.database import Database
+from samples.odlaw.connector_mysql import ConnectorMySQL
+from samples.odlaw.connector_pgsql import ConnectorPostgreSQL
+from samples.odlaw.connector_sqlite import ConnectorSQLite
+from samples.odlaw.database import Database
 from urllib.parse import quote_plus
 import argparse
-import os
 
 
 def main():

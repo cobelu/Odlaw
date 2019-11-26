@@ -1,4 +1,4 @@
-from odlaw.connector import Connector
+from samples.odlaw.connector import Connector
 
 import pandas as pd
 

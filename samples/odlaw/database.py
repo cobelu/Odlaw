@@ -4,7 +4,7 @@ import os
 import glob
 
 from zipfile import ZipFile
-from odlaw.report import Report
+from samples.odlaw.report import Report
 
 
 class Database:
