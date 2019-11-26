@@ -46,7 +46,7 @@ class ConnectorMySQL(Connector):
         table_names = tables['name'].tolist()
         for table in table_names:
             pks_q = "SHOW KEYS FROM %s WHERE Key_name=\'PRIMARY\'" % table
-            # Ask for the foreign keys on that table
+            # Ask for the primary keys on that table
             pk = self.query(pks_q)
             # Discard non-necessary info
             try:
@@ -57,6 +57,8 @@ class ConnectorMySQL(Connector):
             # Append to running log
             pks[table] = pk
         # All found, so reindex and return
+        print("PRIMARY KEYS:")
+        print(pks)
         return pks
 
     def query_fks(self):
@@ -66,11 +68,23 @@ class ConnectorMySQL(Connector):
         :return: A pandas DF of foreign keys in the MySQL DB
         """
         # http://www.postgresqltutorial.com/postgresql-show-tables/
-        # TODO: Fill in database and table
-        tables_q = "SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME "
-        tables_q += "FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE "
-        tables_q += "WHERE REFERENCED_TABLE_SCHEMA=\'<database>\' AND REFERENCED_TABLE_NAME=\'<table>\';"
-        tables = self.query(tables_q)
-        # Return the column of table names in the format
+        fks_q = "SELECT TABLE_NAME, COLUMN_NAME, CONSTRAINT_NAME, "
+        fks_q += "REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME "
+        fks_q += "FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE "
+        fks_q += "WHERE TABLE_SCHEMA=\'%s\' AND " % self.database
+        fks_q += "REFERENCED_TABLE_NAME IS NOT NULL AND "
+        fks_q += "REFERENCED_COLUMN_NAME IS NOT NULL"
+        fks = self.query(fks_q)
 
-        return tables
+        # Rename the DF columns
+        fks = fks.rename(columns={
+            'TABLE_NAME': 'from_table',
+            'COLUMN_NAME': 'from',
+            'REFERENCED_TABLE_NAME': 'table',
+            'REFERENCED_COLUMN_NAME': 'to',
+            'CONSTRAINT_NAME': 'name'
+        })
+
+        # Return the column of table names in the format
+        print(fks)
+        return fks
