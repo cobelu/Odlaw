@@ -27,6 +27,14 @@ system-wide, then simply run the command above without the virtual environment.
     * There should be two subclasses: DatabaseSQLite and DatabasePgsql in database_sqlite.py and database_pgsql.py, respectively
     * Appropriate methods should be moved to the appropriate subclasses     
 
+# Examples
+* SQLite Graph for TPC-H:
+    * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -c`
+* SQLite Search for TPC-H:
+    * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -c`    
+* MySQL Search in Employees:
+    * `python3 main.py -d mysql -u <Username> -P <Password> -n employees -R -t employees -i 10001`
+
 ## Notes
 
 * SQLAlchemy uses `dialect+driver://username:password@host:port/database` as a format, so we'll want to use an arg parser to figure out the optional inputs
