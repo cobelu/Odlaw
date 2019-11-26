@@ -1,4 +1,4 @@
-from samples.odlaw.connector import Connector
+from odlaw.connector import Connector
 
 
 class ConnectorPostgreSQL(Connector):
