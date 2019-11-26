@@ -66,5 +66,6 @@ class DatabaseTest(unittest.TestCase):
         self.assertEqual(database.number_connected_components(), 7)
 
 
+
 if __name__ == '__main__':
     unittest.main()
