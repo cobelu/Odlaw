@@ -38,6 +38,21 @@ class Connector:
         data = self.query(query)
         return data
 
+    def query_for_deletion(self, table, col, in_values):
+        """
+        DANGER: Very dangerous method.
+        Helps to remove sub-table data from the database.
+
+        :param table: The table to delete from
+        :param col: The primary key column of the table
+        :param in_values: The values from the table that are flagged for deletion
+        :return: Result of deletion
+        """
+        query = "DELETE FROM %s WHERE %s IN (%s);" % (table, col, in_values)
+        data = self.query(query)
+        print(query)
+        return data
+
     def close(self):
         """
         Closes the connection to the database.

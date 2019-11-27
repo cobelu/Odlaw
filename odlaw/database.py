@@ -18,13 +18,13 @@ class Database:
         self.connector = connector
 
         # Query for table names
-        self.tables = connector.query_tables()
+        self.tables = self.connector.query_tables()
 
         # Query for primary keys
-        self.pks = connector.query_pks()
+        self.pks = self.connector.query_pks()
 
         # Query for foreign keys
-        self.fks = connector.query_fks()
+        self.fks = self.connector.query_fks()
 
         # The database is represented by a graph
         self.graph = nx.MultiDiGraph()
@@ -156,6 +156,24 @@ class Database:
         # We were unsuccessful if there was a failure
         else:
             return False
+
+    def remove_user(self, user_table, user_id):
+        """
+        Removes a user (and all of their dependent data) from the database.
+
+        :param user_table: The name of the table where user data is stored.
+        :param user_id: The unique identifier of the user to be deleted.
+        :return:
+        """
+        report = self.generate_user_data_report(user_table, user_id)
+        tables = report.tables
+        pks = self.pks
+        for table_name in tables:
+            table = tables.get(table_name)
+            pk = pks.get(table_name)
+            values = table[pk].tolist()
+            self.connector.query_for_deletion(table, pk, values)
+        return
 
     def is_connected(self):
         """
