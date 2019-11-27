@@ -24,6 +24,7 @@ class ConnectorMySQL(Connector):
         # Rename the column name for compatibility
         tables = tables.rename(columns={'TABLE_NAME': 'name'})
 
+        # Found all the tables, so return
         return tables
 
     def query_pks(self):
@@ -56,9 +57,8 @@ class ConnectorMySQL(Connector):
                 pk = pd.DataFrame()
             # Append to running log
             pks[table] = pk
+
         # All found, so reindex and return
-        print("PRIMARY KEYS:")
-        print(pks)
         return pks
 
     def query_fks(self):
@@ -86,5 +86,4 @@ class ConnectorMySQL(Connector):
         })
 
         # Return the column of table names in the format
-        print(fks)
         return fks

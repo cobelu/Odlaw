@@ -23,9 +23,7 @@ system-wide, then simply run the command above without the virtual environment.
     * Deletion should be "rootward" (i.e. nearly identical to the visit method, but deletes after visit and commits after all deletions are successful)
 * Connector methods for PGSQL
     * Lookup syntax
-* Database should become a super class
-    * There should be two subclasses: DatabaseSQLite and DatabasePgsql in database_sqlite.py and database_pgsql.py, respectively
-    * Appropriate methods should be moved to the appropriate subclasses     
+* Graves clicking functionality     
 
 # Examples
 * SQLite Graph for TPC-H:
