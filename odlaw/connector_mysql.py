@@ -31,13 +31,7 @@ class ConnectorMySQL(Connector):
         """
         Asks a MySQL DB for its primary keys.
 
-        :return: A pandas DF of primary keys in the MySQL DB
-        """
-        # http://www.postgresqltutorial.com/postgresql-show-tables/
-        """
-        Asks a MySQL DB for its primary keys.
-
-        :return: A dictionary of primary keys in the SQLite DB
+        :return: A dictionary of primary keys in the MySQL DB
         """
         # Empty DataFrame to be appended
         pks = {}

@@ -157,6 +157,25 @@ class Database:
         else:
             return False
 
+    def block_primary_keys(self, report):
+        """
+        Censors a report to exclude any primary keys
+
+        :param report: A Report object
+        :return: A 'censored' report object
+        """
+        # Iterate over PKs (NOT TABLES) (DBA may not have specified pk)
+        for table in self.pks:
+            # Access the report table
+
+            # Go to the table in the report and drop the column
+            old_tables = report.tables.get(table)
+            censored = old_tables.drop(columns=[self.pks[table]])
+            report.tables[table] = censored
+
+        # Done, so return amended report
+        return report
+
     def remove_user(self, user_table, user_id):
         """
         Removes a user (and all of their dependent data) from the database.
@@ -165,9 +184,11 @@ class Database:
         :param user_id: The unique identifier of the user to be deleted.
         :return:
         """
+        # Generate a report to know where to look
         report = self.generate_user_data_report(user_table, user_id)
         tables = report.tables
         pks = self.pks
+        # Remove data from every affected table
         for table_name in tables:
             table = tables.get(table_name)
             pk = pks.get(table_name)
@@ -202,3 +223,26 @@ class Database:
     @staticmethod
     def list_to_string(list_of_stuff):
         return str(list_of_stuff).strip('[]')
+
+    @staticmethod
+    def block(report, blocks):
+        """
+        Creates a 'censored' version of the report.
+
+        :param report: A Report object to sensor
+        :param blocks: A list of <TABLE>.<COLUMN> entries to be removed from the report
+        :return: A 'censored' Report object
+        """
+        # Go through every constraint
+        for block in blocks:
+            # Find the table and column
+            block_split = block.split('.')  # Split with '.'
+            table = block_split[0]
+            column = block_split[1]
+            # Go to the table in the report and drop the column
+            old_tables = report.tables.get(table)
+            censored = old_tables.drop(columns=[column])
+            report.tables[table] = censored
+
+        # Done, so return the censored report
+        return report

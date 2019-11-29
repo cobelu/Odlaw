@@ -30,6 +30,11 @@ def main():
     parser.add_argument("-t", "--table", type=str, help='User table name', action='store')
     parser.add_argument("-i", "--identifier", type=int, help='Unique user identifier for report', action='store')
     parser.add_argument("-o", "--output", type=str, help='Directory to place the report', action='store')
+    parser.add_argument("-b", "--block", type=str, help='''
+        Comma-delimited list of columns which should not be included in the report
+        in <TABLE>.<COLUMN> format''', action='store')
+    parser.add_argument("-c", "--censor", type=str, help='Removes primary key columns from report', action='store')
+
     # Plotting
     parser.add_argument("-s", "--show", action='store_true')
     # Health
