@@ -188,19 +188,21 @@ class Database:
         report = self.generate_user_data_report(user_table, user_id)
         tables = report.tables
         pks = self.pks
+        user_component_names = list(tables.keys())
+        print(user_component_names)
+        user_component = self.graph.subgraph(user_component_names)
+        top_sort = nx.topological_sort(user_component)
+        rev_top_sort = list(reversed(list(top_sort)))
         # Remove data from every affected table
-        for table_name in tables:
-            table = tables.get(table_name)
-            pk = pks.get(table_name)
-            values = table[pk].tolist()
-            print("Table Name: " + str(table_name))
-            print("Table: " + str(table))
-            print("Primary Key: " + str(pk))
-            print("Values: " + str(values))
+        for node in rev_top_sort:
+            table = tables.get(node)
+            pk = pks.get(node)
+            values = table[pk].unique().tolist()
             in_values = self.list_to_string(values)
-            self.connector.query_for_deletion(table_name, pk, in_values)
-            # except AttributeError:
-            #     print("No results found for %s.%s=(%s)" % (table_name, pk, values))
+            print("Values: " + str(in_values))
+            if not table.empty:
+                self.connector.query_for_deletion(node, pk, in_values)
+
         return
 
     def is_connected(self):

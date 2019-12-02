@@ -136,7 +136,7 @@ def main():
 
     # Deletion (if desired)
     if args.remove and args.table and args.identifier:
-        response = input("Are you sure that you want to remove User %s? [Y]es/[No]" % args.identifier)
+        response = input("Are you sure that you want to remove User %s? [Y]es/[No]: " % args.identifier)
         response = response.lower()
         if response == "y" or response == "yes":
             database.remove_user(args.table, args.identifier)
