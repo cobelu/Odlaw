@@ -38,7 +38,7 @@ def main():
     # Plotting
     parser.add_argument("-s", "--show", action='store_true')
     # Health
-    parser.add_argument("-c", "--connected", action='store_true')
+    parser.add_argument("-j", "--joined", action='store_true')
     # Application
     parser.add_argument("-V", "--version", help='Show program version', action='store_true')
 
@@ -103,7 +103,7 @@ def main():
     database = Database(connector)
 
     # Generate a health check-up (if desired)
-    if args.connected:
+    if args.joined:
         if database.is_connected():
             print("Database is connected. Each table is connected to some other table via a foreign key.")
         else:
