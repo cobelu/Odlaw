@@ -21,7 +21,7 @@ class Connector:
         :param query: SQL string to be executed
         :return: A pandas DF of the query results
         """
-        # print(query)
+        print(query)
         result = pd.read_sql_query(query, self.engine)
         return result
 

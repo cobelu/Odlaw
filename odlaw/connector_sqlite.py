@@ -17,7 +17,7 @@ class ConnectorSQLite(Connector):
         # Find all tables
         tables_q = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE \'sqlite_%\';"
         tables = self.query(tables_q)
-        print(tables)
+        # print(tables)
         return tables
 
     def query_pks(self):
@@ -46,7 +46,7 @@ class ConnectorSQLite(Connector):
             pks[table] = pk
 
         # All found, so reindex and return
-        print(pks)
+        # print(pks)
         return pks
 
     def query_fks(self):
@@ -73,5 +73,5 @@ class ConnectorSQLite(Connector):
             fks = fks.append(fk)
 
         # All found, so reindex and return
-        print(fks)
+        # print(fks)
         return fks

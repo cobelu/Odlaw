@@ -193,8 +193,14 @@ class Database:
             table = tables.get(table_name)
             pk = pks.get(table_name)
             values = table[pk].tolist()
-            values = self.list_to_string(values)
-            self.connector.query_for_deletion(table, pk, values)
+            print("Table Name: " + str(table_name))
+            print("Table: " + str(table))
+            print("Primary Key: " + str(pk))
+            print("Values: " + str(values))
+            in_values = self.list_to_string(values)
+            self.connector.query_for_deletion(table_name, pk, in_values)
+            # except AttributeError:
+            #     print("No results found for %s.%s=(%s)" % (table_name, pk, values))
         return
 
     def is_connected(self):

@@ -58,9 +58,6 @@ def main():
     if args.version:
         print("Odlaw v0.1")
 
-    # Other command line args
-    plot = ''  # Location of plot
-
     # Url structure
     # dialect+driver://username:password@host:port/database
 
@@ -96,7 +93,8 @@ def main():
     # Testing URL
     # url = 'sqlite:///sqlite/TPC-H-small.db'
 
-    print(url)
+    # Print the URL (DEV)
+    # print(url)
 
     # Generate a connection
     if args.dialect.lower() == "mysql":
