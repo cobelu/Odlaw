@@ -25,6 +25,7 @@ def main():
     parser.add_argument("-H", "--host", type=str, help='Host', action='store')
     parser.add_argument("-p", "--port", type=int, help='Port', action='store')
     parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store')
+
     # Report generation
     parser.add_argument("-R", "--report", help='Generates a report', action='store_true')
     parser.add_argument("-t", "--table", type=str, help='User table name', action='store')
@@ -35,10 +36,18 @@ def main():
         in <TABLE>.<COLUMN> format''', action='store')
     parser.add_argument("-c", "--censor", type=str, help='Removes primary key columns from report', action='store')
 
+    # Deletion
+    parser.add_argument("-x",
+                        "--remove",
+                        help='Removes a user and all dependent data from the database',
+                        action='store_true')
+
     # Plotting
     parser.add_argument("-s", "--show", action='store_true')
+
     # Health
     parser.add_argument("-j", "--joined", action='store_true')
+
     # Application
     parser.add_argument("-V", "--version", help='Show program version', action='store_true')
 
@@ -126,6 +135,20 @@ def main():
 
     # Don't forget to close the connection when done!
     connector.close()
+
+    # Deletion (if desired)
+    if args.remove and args.table and args.identifier:
+        response = input("Are you sure that you want to remove User %s? [Y]es/[No]" % args.identifier)
+        response = response.lower()
+        if response == "y" or response == "yes":
+            database.remove_user(args.table, args.identifier)
+            print("User %s removed" % args.identifier)
+        elif response == "n" or response == "no":
+            print("User %s was NOT removed" % args.identifier)
+        else:
+            print("ERROR: Please try again")
+    elif args.remove:
+        print("Please specify table and identifier")
 
 
 if __name__ == '__main__':

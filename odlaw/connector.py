@@ -21,6 +21,7 @@ class Connector:
         :param query: SQL string to be executed
         :return: A pandas DF of the query results
         """
+        # print(query)
         result = pd.read_sql_query(query, self.engine)
         return result
 
@@ -34,7 +35,7 @@ class Connector:
         :return: A pandas DF of table entries of in_values
         """
         query = "SELECT * FROM %s WHERE %s IN (%s);" % (table, col, in_values)
-        print(query)
+        # print(query)
         data = self.query(query)
         return data
 
@@ -49,8 +50,8 @@ class Connector:
         :return: Result of deletion
         """
         query = "DELETE FROM %s WHERE %s IN (%s);" % (table, col, in_values)
-        data = self.query(query)
         print(query)
+        data = self.query(query)
         return data
 
     def close(self):

@@ -193,6 +193,7 @@ class Database:
             table = tables.get(table_name)
             pk = pks.get(table_name)
             values = table[pk].tolist()
+            values = self.list_to_string(values)
             self.connector.query_for_deletion(table, pk, values)
         return
 
