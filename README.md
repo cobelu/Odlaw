@@ -40,9 +40,9 @@ system-wide, then simply run the command above without the virtual environment.
 
 ## Examples
 * SQLite Graph for TPC-H:
-    * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -c`
+    * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -j`
 * SQLite Search for TPC-H:
-    * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -c`    
+    * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -j`    
 * MySQL Search in Employees:
     * `python3 main.py -d mysql -u <Username> -P <Password> -n employees -R -t employees -i 10001`
 * MySQL Deletion of an Employee in Employees
