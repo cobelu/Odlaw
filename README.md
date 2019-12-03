@@ -3,7 +3,7 @@
 Odlaw is a client to look for and help delete customer data in relational databases for GDPR compliancy.
 
 
-# Setup
+## Setup
 * You'll need to install the dependencies listed out in requirements.txt, preferably in a Python virtual environment
 * To activate the virtual environment run:
 
@@ -38,7 +38,7 @@ system-wide, then simply run the command above without the virtual environment.
 * `-V/--version` - Boolean. Prints version.
 * `-h/--help` - Boolean. Prints help.
 
-# Examples
+## Examples
 * SQLite Graph for TPC-H:
     * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -c`
 * SQLite Search for TPC-H:
