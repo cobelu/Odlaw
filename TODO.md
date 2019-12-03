@@ -32,9 +32,16 @@ This document is a TODO list, note page, and resources guide for the development
 * [We should think about drawing the graphs, so DBAs can verify there exist foreign keys (Matplotlib is fine)](https://networkx.github.io/documentation/stable/reference/drawing.html "Drawing NetworkX Graphs")
 
 
-## Sample Datasets
+## Suggested Sample Datasets
 
 * [Oracle's Employees MySQL Database](https://dev.mysql.com/doc/employee/en/ "employees")
 * [MySQLTutorial's Classic Car Businesses MySQL Database](http://www.mysqltutorial.org/mysql-sample-database.aspx "classicmodels")
 * [Lovasoa's Port of TPC-H for SQLite](https://github.com/lovasoa/TPCH-sqlite "TPC-H")
 * [SQLiteTutorial's Record Store SQLite Database](https://www.sqlitetutorial.net/sqlite-sample-database/ "chinook")
+
+
+## Licenses
+
+* NetworkX - BSD 3-Clause "New" or "Revised" License
+* pandas - BSD 3-Clause "New" or "Revised" License
+* SQLAlchemy - MIT License
