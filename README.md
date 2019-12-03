@@ -2,6 +2,7 @@
 
 Odlaw is a client to look for and help delete customer data in relational databases for GDPR compliancy.
 
+
 # Setup
 * You'll need to install the dependencies listed out in requirements.txt, preferably in a Python virtual environment
 * To activate the virtual environment run:
@@ -17,13 +18,25 @@ Odlaw is a client to look for and help delete customer data in relational databa
 that the virtual environment is set up correctly first through the command above. Otherwise, if you want the packages to be installed
 system-wide, then simply run the command above without the virtual environment.
 
-## TODO
-
-* Talk about deletion
-    * Deletion should be "rootward" (i.e. nearly identical to the visit method, but deletes after visit and commits after all deletions are successful)
-* Connector methods for PGSQL
-    * Lookup syntax
-* Graves clicking functionality     
+## Usage
+* `-d/--dialect` - The dialect of the database. Valid options are `SQLite` or `MySQL` (non-case-sensitive).
+* `-r/--driver` - Specifies the driver (currently non-functional)
+* `-u/--user` - Username for database access.
+* `-P/--password` - Password for database access.
+* `-H/--host` - Hostname for database access.
+* `-p/--port` - Port for database access.
+* `-n/--name` - Name of the database.
+* `-R/--report` - Flag to determine if a report should be generated.
+* `-t/--table` - Name of the table from which the search should start (i.e., the User table).
+* `-i/--identifier` - Unique identifier of the User for which the report/deletion should affect.
+* `-o/--output` - Filepath to where the report should be stored (if `--report` is set).  
+* `-b/--block` - A comma-delimited list of `<TABLE>.<COLUMN>` which should be excluded from the report.
+* `-c/--censor` - Boolean. Censors primary keys from the report. 
+* `-x/--remove` - Boolean. Used in place of `--report` if a user and their data should be deleted. 
+* `-s/--show` - Boolean. Prints report. 
+* `-j/--joined` - Boolean. Prints connected components of database.
+* `-V/--version` - Boolean. Prints version.
+* `-h/--help` - Boolean. Prints help.
 
 # Examples
 * SQLite Graph for TPC-H:
@@ -32,21 +45,5 @@ system-wide, then simply run the command above without the virtual environment.
     * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -c`    
 * MySQL Search in Employees:
     * `python3 main.py -d mysql -u <Username> -P <Password> -n employees -R -t employees -i 10001`
-
-## Notes
-
-* SQLAlchemy uses `dialect+driver://username:password@host:port/database` as a format, so we'll want to use an arg parser to figure out the optional inputs
-* Each node represents a table in a database
-* Each arc represents a foreign key entry in a table (tail) to a primary key in another table (source)
-* The label of each arc is the name of the foreign key constraint (DBAs are _supposed_ to name their key constraints)
-* `python3 main.py -d mysql -u root -P <Password> -n classicmodels`
-
-## Help
-
-* You'll want to install PostgreSQL and pgAdmin on your box
-* [Read this tutorial to get started](https://www.datacamp.com/community/tutorials/beginners-introduction-postgresql "PostgreSQL Tutorial")
-* [NetworkX Docs are here](https://networkx.github.io/documentation/stable/index.html "NetworkX Docs")
-* [We may/will have parallel edges, so we will need a MultiDiGraph](https://networkx.github.io/documentation/stable/reference/classes/multidigraph.html "MultiDiGraph")
-* [It would be best to automatically generate a graph from one of the built-in functions (faster), but I had some problems with this before](https://networkx.github.io/documentation/stable/reference/convert.html "Convert")
-* [It would be best to automatically generate a graph from one of the built-in functions (faster), but I had some problems with this before](https://networkx.github.io/documentation/stable/reference/convert.html "Convert")
-* [We should think about drawing the graphs, so DBAs can verify there exist foreign keys (Matplotlib is fine)](https://networkx.github.io/documentation/stable/reference/drawing.html "Drawing NetworkX Graphs")
+* MySQL Deletion of an Employee in Employees
+    * `python3 main.py -d mysql -u <Username> -P <Password> -n employees -x -t employees -i 10001` 
