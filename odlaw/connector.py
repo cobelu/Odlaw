@@ -52,7 +52,7 @@ class Connector:
         :return: Result of deletion
         """
         query = "DELETE FROM %s WHERE %s IN (%s);" % (table, col, in_values)
-        print(query)
+        # print(query)
         self.engine.execute(query)
         return
 

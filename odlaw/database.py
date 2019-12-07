@@ -205,12 +205,14 @@ class Database:
         for node in rev_top_sort:
             table = tables.get(node)
             pk = pks.get(node)
-            values = table[pk].unique().tolist()
-            in_values = self.list_to_string(values)
-            print("Values: " + str(in_values))
-            if not table.empty:
-                self.connector.query_for_deletion(node, pk, in_values)
-
+            try:
+                values = table[pk].unique().tolist()
+                in_values = self.list_to_string(values)
+                if not table.empty:
+                    self.connector.query_for_deletion(node, pk, in_values)
+            except KeyError:
+                if self.connector.verbose:
+                    print("No entries to delete from %s", table)
         return
 
     def is_connected(self):
