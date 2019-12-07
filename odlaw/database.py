@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+import pandas as pd
 import os
 import glob
 
@@ -108,7 +109,10 @@ class Database:
 
             # Get neighbors of root_nodes
             in_values = self.list_to_string(values)
-            data = self.connector.query_for_report(neighbor, from_col, in_values)
+            if in_values == "":
+                data = pd.DataFrame()
+            else:
+                data = self.connector.query_for_report(neighbor, from_col, in_values)
 
             # Write data to dict
             user_report.add_table_entries(neighbor, data)

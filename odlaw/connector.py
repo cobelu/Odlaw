@@ -11,6 +11,7 @@ class Connector:
         self.db_name = db_url
         self.engine = create_engine(db_url)
         self.connection = self.engine.connect()
+        self.verbose = False
 
     def query(self, query):
         """
@@ -21,7 +22,8 @@ class Connector:
         :param query: SQL string to be executed
         :return: A pandas DF of the query results
         """
-        # print(query)
+        if self.verbose:
+            print(query)
         result = pd.read_sql_query(query, self.engine)
         return result
 
