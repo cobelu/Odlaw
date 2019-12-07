@@ -143,9 +143,6 @@ def main():
         report = database.generate_user_data_report(args.table, args.identifier)
         report.print_report()
 
-    # Don't forget to close the connection when done!
-    connector.close()
-
     # Deletion (if desired)
     if args.remove and args.table and args.identifier:
         response = input("Are you sure that you want to remove User %s? [Y]es/[No]: " % args.identifier)
@@ -166,6 +163,9 @@ def main():
         elapsed_time = stop - start
         with open(args.measure, "a") as output:
             output.write("%s,%d\n" % (args.identifier, elapsed_time))
+
+    # Don't forget to close the connection when done!
+    connector.close()
 
 
 if __name__ == '__main__':

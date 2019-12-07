@@ -119,10 +119,14 @@ class Database:
 
             # Fetch primary key and get values for next call
             primary_key = self.pks.get(neighbor)
-            new_values = user_report.tables.get(neighbor)[primary_key].unique().tolist()
 
-            # Recurse
-            self.visit(neighbor, new_values, user_report)
+            try:
+                # If there's more, than recurse
+                new_values = user_report.tables.get(neighbor)[primary_key].unique().tolist()
+                self.visit(neighbor, new_values, user_report)
+            except KeyError:
+                if self.connector.verbose:
+                    print("No entries in %s. Terminating search from this node." % node)
 
         # Return success
         return True
