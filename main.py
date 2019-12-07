@@ -78,7 +78,6 @@ def main():
     if args.driver:
         url += ';+%s' % args.driver
     if args.dialect.lower() == 'mysql':
-        print("Using MySQL dialect...")
         url += '+pymysql'
     url += '://'
     if args.user:
@@ -91,7 +90,6 @@ def main():
         if args.host:
             url += '%s' % args.host
         else:
-            print("Username provided, but not host. Defaulting to host to 'localhost'")
             url += 'localhost'
         if args.port:
             url += ':%s' % args.port
