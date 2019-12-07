@@ -1,3 +1,5 @@
+![Odlaw](docs/resources/odlaw_logo.png)
+
 # Odlaw
 
 Odlaw is a client to look for and help delete customer data in relational databases for GDPR compliancy.
