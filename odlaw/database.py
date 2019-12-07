@@ -197,7 +197,6 @@ class Database:
         tables = report.tables
         pks = self.pks
         user_component_names = list(tables.keys())
-        print(user_component_names)
         user_component = self.graph.subgraph(user_component_names)
         top_sort = nx.topological_sort(user_component)
         rev_top_sort = list(reversed(list(top_sort)))
