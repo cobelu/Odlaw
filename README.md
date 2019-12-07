@@ -25,6 +25,7 @@ system-wide, then simply run the command above without the virtual environment.
 * `-P/--password` - Password for database access.
 * `-H/--host` - Hostname for database access.
 * `-p/--port` - Port for database access.
+* `-m/--measure` - Appends {ID, time (ns)} to log file (CSV) for operation timing
 * `-n/--name` - Name of the database.
 * `-R/--report` - Flag to determine if a report should be generated.
 * `-t/--table` - Name of the table from which the search should start (i.e., the User table).
@@ -35,6 +36,7 @@ system-wide, then simply run the command above without the virtual environment.
 * `-x/--remove` - Boolean. Used in place of `--report` if a user and their data should be deleted. 
 * `-s/--show` - Boolean. Prints report. 
 * `-j/--joined` - Boolean. Prints connected components of database.
+* `-v/--verbose` - Boolean. Prints all queries to console for debugging. 
 * `-V/--version` - Boolean. Prints version.
 * `-h/--help` - Boolean. Prints help.
 
