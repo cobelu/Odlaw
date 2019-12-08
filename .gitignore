@@ -1,0 +1,13 @@
+.DS_Store
+*.swp
+odlaw/__pycache__
+csv/*
+report_tables.zip
+logfile
+*.pyc
+build
+TPCH-sqlite
+venv
+*.spec
+dist
+__pycache__
