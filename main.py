@@ -5,12 +5,13 @@ from odlaw.connector_mysql import ConnectorMySQL
 from odlaw.connector_pgsql import ConnectorPostgreSQL
 from odlaw.connector_sqlite import ConnectorSQLite
 from odlaw.database import Database
+
 from urllib.parse import quote_plus
 import argparse
+import time
 
 
 def main():
-
     # Pull database connection information from the inputs
     # dialect+driver://username:password@host:port/database
 
@@ -49,6 +50,10 @@ def main():
     parser.add_argument("-j", "--joined", action='store_true')
 
     # Application
+    parser.add_argument("-m", "--measure", type=str,
+                        help='If command should be measured and where the *.csv file should be stored',
+                        action='store')
+    parser.add_argument("-v", "--verbose", help='Displays all queries', action='store_true')
     parser.add_argument("-V", "--version", help='Show program version', action='store_true')
 
     # read arguments from the command line
@@ -65,12 +70,14 @@ def main():
     # postgresql://scott:tiger@localhost/mydatabase
     # postgresql+psycopg2://scott:tiger@localhost/mydatabase
 
+    # Begin timing
+    start = time.time_ns()
+
     # Build up a database URL
     url = args.dialect
     if args.driver:
         url += ';+%s' % args.driver
     if args.dialect.lower() == 'mysql':
-        print("Using MySQL dialect...")
         url += '+pymysql'
     url += '://'
     if args.user:
@@ -83,7 +90,6 @@ def main():
         if args.host:
             url += '%s' % args.host
         else:
-            print("Username provided, but not host. Defaulting to host to 'localhost'")
             url += 'localhost'
         if args.port:
             url += ':%s' % args.port
@@ -105,6 +111,10 @@ def main():
         connector = ConnectorSQLite(url)
     else:
         raise Exception("Invalid dialect")
+
+    # Tell the connector to be verbose
+    if args.verbose:
+        connector.verbose = True
 
     # Create a graph representation of the database
     database = Database(connector)
@@ -131,9 +141,6 @@ def main():
         report = database.generate_user_data_report(args.table, args.identifier)
         report.print_report()
 
-    # Don't forget to close the connection when done!
-    connector.close()
-
     # Deletion (if desired)
     if args.remove and args.table and args.identifier:
         response = input("Are you sure that you want to remove User %s? [Y]es/[No]: " % args.identifier)
@@ -147,6 +154,16 @@ def main():
             print("ERROR: Please try again")
     elif args.remove:
         print("Please specify table and identifier")
+
+    # Write measured time to file
+    if args.measure and args.identifier:
+        stop = time.time_ns()
+        elapsed_time = stop - start
+        with open(args.measure, "a") as output:
+            output.write("%s,%d\n" % (args.identifier, elapsed_time))
+
+    # Don't forget to close the connection when done!
+    connector.close()
 
 
 if __name__ == '__main__':

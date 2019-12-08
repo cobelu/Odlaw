@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+import pandas as pd
 import os
 import glob
 
@@ -108,17 +109,24 @@ class Database:
 
             # Get neighbors of root_nodes
             in_values = self.list_to_string(values)
-            data = self.connector.query_for_report(neighbor, from_col, in_values)
+            if in_values == "":
+                data = pd.DataFrame()
+            else:
+                data = self.connector.query_for_report(neighbor, from_col, in_values)
 
             # Write data to dict
             user_report.add_table_entries(neighbor, data)
 
             # Fetch primary key and get values for next call
             primary_key = self.pks.get(neighbor)
-            new_values = user_report.tables.get(neighbor)[primary_key].unique().tolist()
 
-            # Recurse
-            self.visit(neighbor, new_values, user_report)
+            try:
+                # If there's more, than recurse
+                new_values = user_report.tables.get(neighbor)[primary_key].unique().tolist()
+                self.visit(neighbor, new_values, user_report)
+            except KeyError:
+                if self.connector.verbose:
+                    print("No entries in %s. Terminating search from this node." % node)
 
         # Return success
         return True
@@ -189,7 +197,6 @@ class Database:
         tables = report.tables
         pks = self.pks
         user_component_names = list(tables.keys())
-        print(user_component_names)
         user_component = self.graph.subgraph(user_component_names)
         top_sort = nx.topological_sort(user_component)
         rev_top_sort = list(reversed(list(top_sort)))
@@ -197,12 +204,14 @@ class Database:
         for node in rev_top_sort:
             table = tables.get(node)
             pk = pks.get(node)
-            values = table[pk].unique().tolist()
-            in_values = self.list_to_string(values)
-            print("Values: " + str(in_values))
-            if not table.empty:
-                self.connector.query_for_deletion(node, pk, in_values)
-
+            try:
+                values = table[pk].unique().tolist()
+                in_values = self.list_to_string(values)
+                if not table.empty:
+                    self.connector.query_for_deletion(node, pk, in_values)
+            except KeyError:
+                if self.connector.verbose:
+                    print("No entries to delete from %s", table)
         return
 
     def is_connected(self):
