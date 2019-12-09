@@ -22,9 +22,9 @@ system-wide, then simply run the command above without the virtual environment.
 * `-d/--dialect` - The dialect of the database. Valid options are `SQLite` or `MySQL` (non-case-sensitive).
 * `-r/--driver` - Specifies the driver (currently non-functional)
 * `-u/--user` - Username for database access.
-* `-P/--password` - Password for database access.
+* `-p/--password` - Password for database access.
 * `-H/--host` - Hostname for database access.
-* `-p/--port` - Port for database access.
+* `-P/--port` - Port for database access.
 * `-m/--measure` - Appends {ID, time (ns)} to log file (CSV) for operation timing
 * `-n/--name` - Name of the database.
 * `-R/--report` - Flag to determine if a report should be generated.
@@ -33,7 +33,7 @@ system-wide, then simply run the command above without the virtual environment.
 * `-o/--output` - Filepath to where the report should be stored (if `--report` is set).  
 * `-b/--block` - A comma-delimited list of `<TABLE>.<COLUMN>` which should be excluded from the report.
 * `-c/--censor` - Boolean. Censors primary keys from the report. 
-* `-x/--remove` - Boolean. Used in place of `--report` if a user and their data should be deleted. 
+* `-x/--delete` - Boolean. Used in place of `--report` if a user and their data should be deleted. 
 * `-s/--show` - Boolean. Prints report. 
 * `-j/--joined` - Boolean. Prints connected components of database.
 * `-v/--verbose` - Boolean. Prints all queries to console for debugging. 
@@ -46,6 +46,6 @@ system-wide, then simply run the command above without the virtual environment.
 * SQLite Search for TPC-H:
     * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -j`    
 * MySQL Search in Employees:
-    * `python3 main.py -d mysql -u <Username> -P <Password> -n employees -R -t employees -i 10001`
+    * `python3 main.py -d mysql -u <Username> -p <Password> -n employees -R -t employees -i 10001`
 * MySQL Deletion of an Employee in Employees
-    * `python3 main.py -d mysql -u <Username> -P <Password> -n employees -x -t employees -i 10001` 
+    * `python3 main.py -d mysql -u <Username> -p <Password> -n employees -x -t employees -i 10001` 

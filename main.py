@@ -22,9 +22,9 @@ def main():
     parser.add_argument("-d", "--dialect", type=str, default='sqlite', help='SQL dialect', action='store')
     parser.add_argument("-r", "--driver", type=str, help='Driver', action='store')
     parser.add_argument("-u", "--user", type=str, help='Username', action='store')
-    parser.add_argument("-P", "--password", type=str, help='Password', action='store')
+    parser.add_argument("-p", "--password", type=str, help='Password', action='store')
     parser.add_argument("-H", "--host", type=str, help='Host', action='store')
-    parser.add_argument("-p", "--port", type=int, help='Port', action='store')
+    parser.add_argument("-P", "--port", type=int, help='Port', action='store')
     parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store')
 
     # Report generation
@@ -39,7 +39,7 @@ def main():
 
     # Deletion
     parser.add_argument("-x",
-                        "--remove",
+                        "--delete",
                         help='Removes a user and all dependent data from the database',
                         action='store_true')
 
