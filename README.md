@@ -28,7 +28,7 @@ system-wide, then simply run the command above without the virtual environment.
 * `-H/--host` - Hostname for database access.
 * `-P/--port` - Port for database access.
 * `-m/--measure` - Appends {ID, time (ns)} to log file (CSV) for operation timing
-* `-n/--name` - Name of the database.
+* `-n/--name` - Name of the database (required).
 * `-R/--report` - Flag to determine if a report should be generated.
 * `-t/--table` - Name of the table from which the search should start (i.e., the User table).
 * `-i/--identifier` - Unique identifier of the User for which the report/deletion should affect.
