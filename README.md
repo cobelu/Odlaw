@@ -1,3 +1,5 @@
+![Odlaw](docs/resources/odlaw_logo.png)
+
 # Odlaw
 
 Odlaw is a client to look for and help delete customer data in relational databases for GDPR compliancy.
@@ -10,7 +12,7 @@ Odlaw is a client to look for and help delete customer data in relational databa
     `source venv/bin/activate`
 
   From the root of the project. The string (venv) should be prepended to the terminal prompt if the virtual environment was activated correctly.
-* To then install the required packages, run:
+* Then, to install the required packages, run:
 
     `pip3 install -r requirements.txt`
 

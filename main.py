@@ -25,7 +25,7 @@ def main():
     parser.add_argument("-p", "--password", type=str, help='Password', action='store')
     parser.add_argument("-H", "--host", type=str, help='Host', action='store')
     parser.add_argument("-P", "--port", type=int, help='Port', action='store')
-    parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store')
+    parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store', required=True)
 
     # Report generation
     parser.add_argument("-R", "--report", help='Generates a report', action='store_true')
