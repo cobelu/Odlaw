@@ -20,7 +20,9 @@ Odlaw is a client to look for and help delete customer data in relational databa
 that the virtual environment is set up correctly first through the command above. Otherwise, if you want the packages to be installed
 system-wide, then simply run the command above without the virtual environment.
 
+
 ## Usage
+
 * `-d/--dialect` - The dialect of the database. Valid options are `SQLite` or `MySQL` (non-case-sensitive).
 * `-r/--driver` - Specifies the driver (currently non-functional)
 * `-u/--user` - Username for database access.
@@ -42,7 +44,9 @@ system-wide, then simply run the command above without the virtual environment.
 * `-V/--version` - Boolean. Prints version.
 * `-h/--help` - Boolean. Prints help.
 
+
 ## Examples
+
 * SQLite Graph for TPC-H:
     * `python3 main.py -d sqlite -n samples/sqlite/TPC-H-small.db -s -j`
 * SQLite Search for TPC-H:
@@ -51,3 +55,16 @@ system-wide, then simply run the command above without the virtual environment.
     * `python3 main.py -d mysql -u <Username> -p <Password> -n employees -R -t employees -i 10001`
 * MySQL Deletion of an Employee in Employees
     * `python3 main.py -d mysql -u <Username> -p <Password> -n employees -x -t employees -i 10001` 
+
+
+## Sample Databases
+
+### SQLite
+* [SQLiteTutorial.net's Sample Database](https://www.sqlitetutorial.net/sqlite-sample-database/ "chinook")
+* [TPC-H in SQLite](https://github.com/lovasoa/TPCH-sqlite "SQLite TPC-H")
+
+### MySQL
+* [Oracle's Employee Sample Database](https://dev.mysql.com/doc/employee/en/ "employees")
+* [MySQLTutorial.org's Sample Database](http://www.mysqltutorial.org/mysql-sample-database.aspx "classicmodels")
+* [HotCRP](https://github.com/kohler/hotcrp/blob/master/src/schema.sql "HotCRP")
+
