@@ -131,7 +131,7 @@ class Database:
         # Return success
         return True
 
-    def generate_csv_user_data_report(self, user_table, user_id, location=None, prefix='report', sep=','):
+    def generate_csv_user_data_report(self, user_table, user_id, location, prefix='report', sep=','):
         """
         Calls generate_user_data_report and writes the resulting tables to a CSV file.
 
@@ -145,18 +145,18 @@ class Database:
         saves = []
         report = self.generate_user_data_report(user_table, user_id)
         tables = report.tables
-        for table_name, dataframe in tables.items():
+        for table_name, data_frame in tables.items():
             output_url = "%s/%s_%s.csv" % (location, prefix, table_name)
-            did_save = dataframe.to_csv(output_url, sep=sep)
+            did_save = data_frame.to_csv(output_url, sep=sep)
             saves.append(did_save)
-            # Write out dataframe to a csvfile
+            # Write out dataframe to a csv file
 
         # Zip up data-frames to a single zip archive
-        zip_url = '%s_tables.zip' % prefix
+        zip_url = '%s/%s_tables.zip' % (location, prefix)
         with ZipFile(zip_url, 'w') as zf:
             for csv in glob.glob('%s/*.csv' % location):
                 zf.write(csv)
-                os.remove(csv) # Zipped it, so remove it
+                os.remove(csv)  # Zipped it, so remove it
 
         # We were successful if all saves went through
         if all(save is not None for save in saves):

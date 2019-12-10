@@ -136,7 +136,7 @@ def main():
 
     # Generate report and save (if desired)
     if args.report and args.table and args.identifier and args.output:
-        database.generate_csv_user_data_report(args.table, args.identifier, args.report)
+        database.generate_csv_user_data_report(args.table, args.identifier, args.output)
     elif args.report and args.table and args.identifier:
         report = database.generate_user_data_report(args.table, args.identifier)
         report.print_report()
