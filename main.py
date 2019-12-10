@@ -39,7 +39,7 @@ def main():
 
     # Deletion
     parser.add_argument("-x",
-                        "--delete",
+                        "--remove",
                         help='Removes a user and all dependent data from the database',
                         action='store_true')
 
