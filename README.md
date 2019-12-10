@@ -38,7 +38,7 @@ system-wide, then simply run the command above without the virtual environment.
 * `-b/--block` - A comma-delimited list of `<TABLE>.<COLUMN>` which should be excluded from the report.
 * `-c/--censor` - Boolean. Censors primary keys from the report. 
 * `-x/--delete` - Boolean. Used in place of `--report` if a user and their data should be deleted. 
-* `-s/--show` - Boolean. Prints report. 
+* `-s/--show` - Boolean. Shows the graphical form of the database. 
 * `-j/--joined` - Boolean. Prints connected components of database.
 * `-v/--verbose` - Boolean. Prints all queries to console for debugging. 
 * `-V/--version` - Boolean. Prints version.
