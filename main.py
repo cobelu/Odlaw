@@ -25,7 +25,8 @@ def main():
     parser.add_argument("-p", "--password", type=str, help='Password', action='store')
     parser.add_argument("-H", "--host", type=str, help='Host', action='store')
     parser.add_argument("-P", "--port", type=int, help='Port', action='store')
-    parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name', action='store', required=True)
+    parser.add_argument("-n", "--name", type=str, default='sqlite/TPC-H-small.db', help='Database name',
+                        action='store', required=True)
 
     # Report generation
     parser.add_argument("-R", "--report", help='Generates a report', action='store_true')
@@ -35,7 +36,7 @@ def main():
     parser.add_argument("-b", "--block", type=str, help='''
         Comma-delimited list of columns which should not be included in the report
         in <TABLE>.<COLUMN> format''', action='store')
-    parser.add_argument("-c", "--censor", type=str, help='Removes primary key columns from report', action='store')
+    parser.add_argument("-c", "--censor", help='Removes primary key columns from report', action='store_true')
 
     # Deletion
     parser.add_argument("-x",
@@ -139,6 +140,8 @@ def main():
         database.generate_csv_user_data_report(args.table, args.identifier, args.output)
     elif args.report and args.table and args.identifier:
         report = database.generate_user_data_report(args.table, args.identifier)
+        if args.censor:
+            report = database.block_primary_keys(report)
         report.print_report()
 
     # Deletion (if desired)

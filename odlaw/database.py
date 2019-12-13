@@ -175,11 +175,15 @@ class Database:
         # Iterate over PKs (NOT TABLES) (DBA may not have specified pk)
         for table in self.pks:
             # Access the report table
-
-            # Go to the table in the report and drop the column
-            old_tables = report.tables.get(table)
-            censored = old_tables.drop(columns=[self.pks[table]])
-            report.tables[table] = censored
+            try:
+                # Go to the table in the report and drop the column
+                old_tables = report.tables.get(table)
+                censored = old_tables.drop(columns=[self.pks[table]])
+                report.tables[table] = censored
+            # Empty DF
+            except AttributeError:
+                if self.connector.verbose:
+                    print("Empty dataframe")
 
         # Done, so return amended report
         return report
