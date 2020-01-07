@@ -226,6 +226,20 @@ class Database:
                     print("No entries to delete from %s", table)
         return
 
+    def get_pk_value_from_row(self, table, row):
+        """
+        Given a DataFrame row, returns the value of the row's entry for the table's primary key.
+
+        :param table: The name of the table as a String from which the row came
+        :param row: The row of interest from the table as a dictionary
+        :return: The value of row[table.pk]
+        """
+        # Get the primary key of the table
+        table_pk = self.pks.get(table)
+        # Get the value of that column entry
+        pk_value = row.get(table_pk)
+        return pk_value
+
     def is_connected(self):
         """
         Checks if the database graph is connected.
