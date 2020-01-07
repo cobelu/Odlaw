@@ -59,6 +59,14 @@ class Database:
         plt.show()
         return
 
+    def node_link_json(self):
+        """
+        Exports the contents of the Database's graph as a JSON in node-link form.
+
+        :return: Dictionary of nodes and links
+        """
+        return nx.readwrite.json_graph.node_link_data(self.graph)
+
     def generate_user_data_report(self, user_table, user_id):
         """
         Finds all user data for a specified user, provided all foreign keys are correct.
