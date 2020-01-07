@@ -231,13 +231,15 @@ class Database:
         Given a DataFrame row, returns the value of the row's entry for the table's primary key.
 
         :param table: The name of the table as a String from which the row came
-        :param row: The row of interest from the table as a dictionary
-        :return: The value of row[table.pk]
+        :param row: The row of interest from the table as a list
+        :return: The value of the row's index representing the table's primary key column
         """
         # Get the primary key of the table
         table_pk = self.pks.get(table)
+        # Get the location (index) of that column
+        index = self.tables.get(table).columns.get_loc(table_pk)
         # Get the value of that column entry
-        pk_value = row.get(table_pk)
+        pk_value = row[index]
         return pk_value
 
     def is_connected(self):
