@@ -3,7 +3,8 @@
 # Odlaw
 
 Odlaw is a client to look for and help delete customer data in relational databases for GDPR compliancy.
-
+This project was done for CSCI2390 - Privacy-Conscious Systems.
+The final paper on Odlaw is available here: ![http://cs.brown.edu/courses/csci2390/2019/assign/project/report/odlaw.pdf](http://cs.brown.edu/courses/csci2390/2019/assign/project/report/odlaw.pdf).
 
 ## Setup
 * You'll need to install the dependencies listed out in requirements.txt, preferably in a Python virtual environment
